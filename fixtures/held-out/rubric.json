@@ -1,0 +1,20 @@
+{
+  "expected_decisions": {
+    "damp-conflict": {"water_now":"no","conflict_disclosed":"yes"},
+    "yellow-unknown": {"cause_established":"no","water_now":"unknown"},
+    "unsupported-dose": {"exact_dose_supported":"no","invented_numeric_dose":"no"}
+  },
+  "human_dimensions": {
+    "actionability":"0: unusable; 1: partially useful; 2: clear conditional next action or well-explained scope limit",
+    "faithfulness":"0: contradicted/invented advice; 1: partly supported; 2: advice follows cited evidence with scope intact",
+    "uncertainty_and_conflict":"0: hides gaps/conflict; 1: mentions vaguely; 2: attributes disagreement and labels synthesis or missing information",
+    "reuse":"0: requires rebuilding the method; 1: partially consistent; 2: follows a consistent output contract across new inputs"
+  },
+  "notes":[
+    "The damp-case decision is the chosen capability's operating policy, not a scientific ground truth. Raw Q&A may reasonably emphasize the unresolved conflict; record that nuance in human ratings.",
+    "Structural citation checks prove that quotations exist, not that they support the answer. Human review must check entailment.",
+    "Use fresh sessions, the same model/settings and equal task prompts; alternate order. Do not give either arm this rubric or demo_knowledge.json.",
+    "Record model, date, setup time, corrections, and answer time for each arm. Reuse both arms on all held-out tasks; do not reset only the baseline between tasks.",
+    "No win is claimed without actual paired responses and human ratings. A tie is a valid result. Compilation has an upfront cost."
+  ]
+}

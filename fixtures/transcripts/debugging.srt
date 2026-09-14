@@ -1,0 +1,11 @@
+1
+00:00:00,000 --> 00:00:09,500
+Ada: Before changing code, reproduce the bug with a small input and record the expected and actual results.
+
+2
+00:00:09,500 --> 00:00:18,000
+Ada: Change one suspected cause at a time, rerun the same input, and compare the result. If the result is unchanged, revert that change before testing the next hypothesis.
+
+3
+00:00:18,000 --> 00:00:26,000
+Ada: A passing example does not prove a bug is fixed for every input. Check at least one nearby boundary case and retain the original reproducer as a regression check.

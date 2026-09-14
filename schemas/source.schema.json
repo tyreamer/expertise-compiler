@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "source",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string",
+      "pattern": "^src-[a-f0-9]{24}$"
+    },
+    "filename": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "creator": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^https?://[^\\s/?#]+(?:[/?#][^\\s]*)?$"
+    },
+    "caption_type": {
+      "enum": [
+        "unknown",
+        "manual",
+        "automatic",
+        "synthetic"
+      ]
+    },
+    "content_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "raw_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "segment_id": {
+            "type": "string",
+            "pattern": "^seg-[0-9]{6}$"
+          },
+          "start": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "end": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "speaker": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "raw_text": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "segment_id",
+          "start",
+          "end",
+          "speaker",
+          "text",
+          "raw_text"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "source_id",
+    "filename",
+    "title",
+    "creator",
+    "url",
+    "caption_type",
+    "content_hash",
+    "raw_path",
+    "segments"
+  ],
+  "additionalProperties": false
+}

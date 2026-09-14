@@ -1,0 +1,43 @@
+[
+  {
+    "schema_version":"1.0","capability_id":"container-herb-reviewer","title":"Container herb watering reviewer",
+    "description":"Review container-herb watering decisions using moisture and drainage observations; use when deciding whether the supplied observations justify watering.",
+    "rationale":"Turns scattered advice and disagreement into a repeatable conditional review, with source-linked boundaries.",
+    "inputs":"Herb context, soil feel about two centimetres deep, drainage-hole status, and observed symptoms; identify missing observations.",
+    "output_contract":"Return observations, missing information, a conditional next action, the disagreement between sources, and citations including unit, source, and segment IDs. Label the review framework synthesized.",
+    "unit_ids":["herb-moisture","herb-yellow","herb-daily-opinion","herb-opinion-scope","herb-triage"],
+    "steps":[
+      {"instruction":"Collect soil moisture and drainage observations. Yellow leaves alone cannot establish a cause.","unit_ids":["herb-yellow"]},
+      {"instruction":"Apply Mira's conditional procedure: damp means wait and recheck tomorrow; dry means water slowly until drainage. If drainage is unknown or absent, flag that unmet condition before advising this procedure.","unit_ids":["herb-moisture","herb-yellow"]},
+      {"instruction":"Disclose Noah's contrary daily-watering opinion and its single-balcony scope. Use observable conditions for this review without declaring either source universally correct.","unit_ids":["herb-daily-opinion","herb-opinion-scope","herb-triage"]}
+    ],
+    "boundaries":["No species-specific water quantities or schedules are established.","Do not diagnose disease or prescribe fertilizer from these sources.","No advice for plants outside container herbs is established."],
+    "conflict_policy":"Retain both recommendations with attribution. This capability adopts Mira's conditional checks as its operating method, an explicit design choice, while showing Noah's contrary opinion and limited scope. This is not proof of botanical correctness.",
+    "checks":["Did I distinguish observed moisture from assumed moisture?","Did I avoid diagnosis from yellow leaves alone?","Did I disclose the conflict and label synthesis?","Can each source-derived recommendation be traced to evidence?"],
+    "examples":[{"input":"Container mint has dry soil two centimetres down and confirmed drainage holes. What does this material suggest?","output":"Mira's method suggests watering slowly until water exits the holes (herb-moisture). Noah instead favors daily watering based on one balcony (herb-daily-opinion; herb-opinion-scope). The observation-based review is our synthesized framework (herb-triage), not proof of a universal rule.","unit_ids":["herb-moisture","herb-daily-opinion","herb-opinion-scope","herb-triage"],"status":"synthetic"}]
+  },
+  {
+    "schema_version":"1.0","capability_id":"handheld-blur-reviewer","title":"Handheld photo blur reviewer",
+    "description":"Review blur in a static handheld photograph and propose a test that distinguishes camera shake from missed focus.",
+    "rationale":"Converts camera advice into a diagnostic sequence with a focus check and exposure tradeoff.",
+    "inputs":"Static handheld scene, a test photo or description of sharp and blurred regions, and current settings if known.",
+    "output_contract":"Return observations, missing evidence, one conditional next test, exposure tradeoff, and source-linked reasoning.",
+    "unit_ids":["photo-inspect","photo-shutter","photo-focus"],
+    "steps":[{"instruction":"Request or inspect a test image and identify which regions are sharp.","unit_ids":["photo-inspect","photo-focus"]},{"instruction":"Only if camera shake is supported, suggest a faster shutter, explain reduced captured light and aperture/ISO compensation, then retest. Do not present shutter speed as a fix for missed focus.","unit_ids":["photo-shutter","photo-focus"]}],
+    "boundaries":["The sources establish no numeric shutter, aperture, or ISO targets.","Moving subjects, flash technique, and lens purchase recommendations are outside this method."],
+    "conflict_policy":"","checks":["Did I distinguish missed focus from camera shake?","Did I include the exposure tradeoff and retest?"],
+    "examples":[{"input":"A static handheld building photo seems smeared everywhere, but I have not inspected it closely.","output":"Inspect a test image and identify sharp regions before attributing blur to shake (photo-inspect; photo-focus). If shake is supported, test a faster shutter with exposure compensation and inspect again (photo-shutter).","unit_ids":["photo-inspect","photo-focus","photo-shutter"],"status":"synthetic"}]
+  },
+  {
+    "schema_version":"1.0","capability_id":"debug-experiment-planner","title":"Debugging experiment planner",
+    "description":"Turn a software bug report into a minimal reproduction, one-change experiments, and regression checks.",
+    "rationale":"Creates a repeatable troubleshooting protocol rather than a guessed code patch.",
+    "inputs":"Bug symptoms, expected result, actual result, and the smallest known triggering input.",
+    "output_contract":"Return a reproducer plan, one hypothesis to test at a time, revert conditions, and original plus nearby boundary regression cases with evidence citations.",
+    "unit_ids":["debug-reproduce","debug-isolate","debug-regress"],
+    "steps":[{"instruction":"Record expected and actual results and reduce the triggering input before proposing edits.","unit_ids":["debug-reproduce"]},{"instruction":"Test one suspected cause at a time against the same input; revert ineffective changes before the next hypothesis.","unit_ids":["debug-isolate"]},{"instruction":"Retain the original reproducer and add a nearby boundary check; do not claim universal correctness from a single passing case.","unit_ids":["debug-regress"]}],
+    "boundaries":["No specific code fix is established without inspecting the user's code.","These sources do not establish security, performance, or concurrency guarantees."],
+    "conflict_policy":"","checks":["Are expected and actual results explicit?","Does each experiment change only one suspected cause?","Are revert and regression conditions included?"],
+    "examples":[{"input":"A formatter adds an unwanted space for a one-character string.","output":"Record the one-character input and exact expected/actual text (debug-reproduce). Change one suspected formatting condition and rerun; revert if unchanged (debug-isolate). Preserve that case and test an empty or two-character string (debug-regress). The chosen boundary inputs are an application of the method, not source examples.","unit_ids":["debug-reproduce","debug-isolate","debug-regress"],"status":"synthetic"}]
+  }
+]

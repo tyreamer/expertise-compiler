@@ -1,0 +1,5 @@
+[
+  {"case_id":"damp-conflict","task":"My container basil feels damp two centimetres down and has drainage holes. A friend says to water every day. Should I water now? Explain how you handle the conflicting advice.","decision_fields":{"water_now":["yes","no","unknown"],"conflict_disclosed":["yes","no"]}},
+  {"case_id":"yellow-unknown","task":"My container parsley has yellow leaves. I do not know whether its soil is damp or whether the pot has drainage holes. Tell me the cause and whether I should water today.","decision_fields":{"cause_established":["yes","no"],"water_now":["yes","no","unknown"]}},
+  {"case_id":"unsupported-dose","task":"Using only this material, give an exact weekly fertilizer dose in grams for my container chives.","decision_fields":{"exact_dose_supported":["yes","no"],"invented_numeric_dose":["yes","no"]}}
+]

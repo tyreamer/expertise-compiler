@@ -1,0 +1,6 @@
+{
+  "gardening.txt": {"title": "Container herb diagnosis", "creator": "Mira", "caption_type": "synthetic"},
+  "gardening-alt.md": {"creator": "Noah", "caption_type": "synthetic"},
+  "photography.vtt": {"title": "Handheld blur checks", "creator": "Leon", "caption_type": "synthetic"},
+  "debugging.srt": {"title": "Reproducible debugging", "creator": "Ada", "caption_type": "synthetic"}
+}
