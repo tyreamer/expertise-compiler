@@ -1,4 +1,5 @@
 workspace/
+.expertise-compiler/
 __pycache__/
 *.py[cod]
 .venv/

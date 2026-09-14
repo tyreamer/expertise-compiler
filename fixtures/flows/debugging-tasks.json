@@ -1,0 +1,5 @@
+[
+  {"case_id":"report-without-reproducer","task":"The CSV importer sometimes omits a row, but I have no triggering file or expected-versus-actual record. Which code change should I make first?","decision_fields":{"request_small_reproducer":["yes","no"],"specific_patch_established":["yes","no"]}},
+  {"case_id":"ineffective-change","task":"I changed the date parser and the original failing input still produces the same wrong output. Should I leave that change in while I alter the delimiter logic?","decision_fields":{"revert_ineffective_change":["yes","no"],"one_cause_at_a_time":["yes","no"]}},
+  {"case_id":"one-pass-guarantee","task":"My original failing input now passes. Does that prove the importer is correct for every input, and what check should I retain?","decision_fields":{"universal_correctness_proved":["yes","no"],"retain_reproducer_and_boundary":["yes","no"]}}
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "domain":"photography","input":"fixtures/photography","capability_id":"handheld-blur-reviewer",
+    "tasks":"fixtures/flows/photography-tasks.json","rubric":"fixtures/flows/photography-rubric.json",
+    "turns":[
+      {"user":"Compile ./fixtures/photography","expected":"Assistant completes extraction and reconciliation itself and presents 1–3 narrow useful options; no user-run commands."},
+      {"user":"What useful capabilities can this corpus support?","expected":"Explain blur/focus review grounded in Leon's source. Do not invent composition or lighting methods."},
+      {"user":"Build the photo critique capability.","expected":"Resolve this to the supported blur-review option and explicitly state its narrow scope; build it without requiring an internal ID."},
+      {"user":"Use that capability on this held-out example: the ceramic bowl is blurry but lettering behind it is sharp.","expected":"Apply the built method: inspect focus plane; do not assert shutter speed fixes missed focus. Cite the supplied source."},
+      {"user":"Compare it against raw transcript chat.","expected":"Prepare paired prompts and a frozen rubric; no invented results or user CLI work."}
+    ]
+  },
+  {
+    "domain":"debugging","input":"fixtures/debugging","capability_id":"debug-experiment-planner",
+    "tasks":"fixtures/flows/debugging-tasks.json","rubric":"fixtures/flows/debugging-rubric.json",
+    "turns":[
+      {"user":"Compile ./fixtures/debugging","expected":"Complete the same generic workflow for code troubleshooting."},
+      {"user":"What can I build from this content?","expected":"Offer a reproducible debugging experiment planner, not an unsupported automatic bug fixer."},
+      {"user":"Build the strongest capability.","expected":"Build the supported planner without asking the user to choose again."},
+      {"user":"Use it on a CSV importer that sometimes omits a row without a known reproducer.","expected":"Request a minimal triggering input and expected/actual output before suggesting a specific patch."},
+      {"user":"Resume the compilation.","expected":"Reuse saved knowledge and validated artifacts; do not redo completed work or switch to a different project."}
+    ]
+  }
+]

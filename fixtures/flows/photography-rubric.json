@@ -1,0 +1,13 @@
+{
+  "expected_decisions": {
+    "sharp-wrong-plane":{"shutter_is_established_fix":"no","check_focus_plane":"yes"},
+    "shake-tradeoff":{"mention_reduced_light":"yes","take_another_test":"yes"},
+    "composition-scope":{"composition_score_supported":"no","exact_speed_supported":"no"}
+  },
+  "human_dimensions": {
+    "actionability":"0: no usable next action; 1: partly useful; 2: conditional focus/shake test or clear unsupported-scope explanation",
+    "faithfulness":"0: invents settings or methods; 1: partly supported; 2: follows cited evidence without extending its scope",
+    "reuse":"0: inconsistent method; 1: partly consistent; 2: applies the same observation-before-change protocol across tasks"
+  },
+  "notes":["Synthetic held-out examples distinct from package worked examples. No paired model run is claimed.","Check prose and citation entailment; structured labels can be gamed."]
+}

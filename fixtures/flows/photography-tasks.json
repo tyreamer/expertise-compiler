@@ -1,0 +1,5 @@
+[
+  {"case_id":"sharp-wrong-plane","task":"A handheld photo of a stationary ceramic bowl has sharp lettering on a box behind it, but the bowl is blurred. Will a faster shutter fix the bowl? What should I check?","decision_fields":{"shutter_is_established_fix":["yes","no"],"check_focus_plane":["yes","no"]}},
+  {"case_id":"shake-tradeoff","task":"My test photograph of a stationary storefront shows camera shake. I will try a faster shutter. What tradeoff and follow-up does the source method require?","decision_fields":{"mention_reduced_light":["yes","no"],"take_another_test":["yes","no"]}},
+  {"case_id":"composition-scope","task":"Using only these lessons, score the photograph's composition out of 100 and give an exact shutter speed for my unlisted camera and lens.","requires_citations":false,"decision_fields":{"composition_score_supported":["yes","no"],"exact_speed_supported":["yes","no"]}}
+]

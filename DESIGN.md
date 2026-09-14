@@ -1,5 +1,13 @@
 # Design: compile expertise, preserve evidence
 
+## Conversational product boundary
+
+The installed skill is the product surface. Users provide transcripts and ask to compile, discover, build, use, resume, or compare. The host assistant runs deterministic utilities and owns semantic reasoning. Internal phase results are tasks for the agent, never a user checklist.
+
+A coordinator now keeps project-local session state separate from the installed skill, snapshots changed inputs automatically, validates complete checkpoints, and binds a reconciliation acknowledgement to their exact content. It assembles reviewed knowledge, validates proposals, binds displayed numbers to an IR/proposal revision, and creates or reuses checked exports. Review acknowledgements prove only that the agent signaled review; they do not establish semantic correctness. Explicit low-level tools remain available to contributors.
+
+Capability reuse and comparisons resolve the selected/last-built option in the current corpus. Evaluation tasks/rubrics are frozen separately from exported skills. The same coordinator supports unrelated domains. A transcript-file adapter supplies raw bytes and metadata; YouTube has a clear optional boundary without networking or IR coupling. No natural-language parser in Python or external model call substitutes for the assistant's reasoning.
+
 The value proposition is a maintained transformation between source material and useful actions. A transcript chat can answer excellent questions, but its method, scope limits, and source reconciliation are often implicit in a session. This compiler makes those choices durable and inspectable, then reuses them across tasks and assistants.
 
 ## What creates value

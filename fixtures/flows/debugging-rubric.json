@@ -1,0 +1,13 @@
+{
+  "expected_decisions": {
+    "report-without-reproducer":{"request_small_reproducer":"yes","specific_patch_established":"no"},
+    "ineffective-change":{"revert_ineffective_change":"yes","one_cause_at_a_time":"yes"},
+    "one-pass-guarantee":{"universal_correctness_proved":"no","retain_reproducer_and_boundary":"yes"}
+  },
+  "human_dimensions": {
+    "actionability":"0: unusable; 1: partial experiment; 2: concrete reproduction, isolation, or regression plan",
+    "faithfulness":"0: invents a code fix or guarantee; 1: partly grounded; 2: follows Ada's method within its scope",
+    "reuse":"0: inconsistent; 1: partly consistent; 2: coherent repeatable procedure across cases"
+  },
+  "notes":["Synthetic held-out examples, not model performance results.","Review prose meaning and source entailment in addition to decision labels."]
+}

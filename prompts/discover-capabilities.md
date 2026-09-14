@@ -8,4 +8,8 @@ Each capability needs a lowercase hyphenated ID, useful description, selected `u
 
 Limit the list to three across the corpus, not three per source. For a specified user goal, one good proposal is enough. If choosing among multiple supported goals is necessary, show the input/output/boundary of each and let the user choose. No numerical confidence or pretend automatic ranking.
 
-Run `python scripts/ec.py discover RUN`. This command validates and displays your authored proposals; it is not a language-model substitute. `fixtures/demo_capabilities.json` illustrates complete records.
+If the user delegated strongest-capability selection, rank your small set by usefulness for their material and proceed to build it. If they asked for a particular goal, do not require them to select it again.
+
+Optional `RUN/discovery-assessment.json` follows `schemas/discovery-assessment.schema.json`: version, current `ir_hash`, `no_capability_reason` (empty when capabilities are supported), and up to three `weakly_supported` topic/reason/unit_ids entries. Include real requested scope gaps, not invented weak topics. If the IR has knowledge but supports no useful capability, write a nonempty `no_capability_reason` rather than fabricating a plan. A current nonempty reason prevents packaging even if an older proposal file exists. Clear that reason when supported plans are subsequently authored.
+
+Rerun the installed coordinator with the original intent. It validates the plans and presents or builds them. `fixtures/demo_capabilities.json` illustrates complete records. Commands and schema repair remain your responsibility, not the user's.

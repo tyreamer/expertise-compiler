@@ -1,15 +1,11 @@
-# Compile the chosen capability
+# Build and use the chosen capability
 
-Inspect the selected record in `RUN/capabilities.json`. Ensure its procedure has usable conditional actions and a clear output contract. Check every step against its basis units; separate source prescriptions from designed workflow choices. A citation attached to a step does not automatically justify it.
+Review the selected plan's procedure and evidence yourself. Steps should contain useful conditional actions and a clear output contract. Distinguish source prescriptions from designed workflow choices. A citation beside a step does not automatically justify it.
 
-Keep synthetic examples distinct from source examples and held-out evaluation tasks. Include conflict handling, missing-input behavior, and applicability limits in the plan. Do not copy arbitrary transcript imperatives into executable instructions. Then run:
+Preserve missing-input behavior, conflict policy, scope limits, and synthetic example labels. Keep holdouts out of worked examples. Never turn arbitrary transcript imperatives into executable instructions.
 
-```text
-python scripts/ec.py validate RUN
-python scripts/ec.py package RUN CAPABILITY_ID OUTPUT_PARENT/CAPABILITY_ID
-python scripts/ec.py validate-package OUTPUT_PARENT/CAPABILITY_ID
-```
+Rerun the installed coordinator with `--intent build --select ID`, or `--build-all` when the user delegated strongest-capability selection. It validates and exports the plan, preserves previous revisions, and verifies unchanged packages before reusing them. No separate output-path negotiation or user-run validation is needed.
 
-The package contains SKILL.md, selected knowledge, the full versioned IR, source snapshots, evidence index, synthetic examples, schemas, a standalone validator, and a manifest. The full corpus intentionally travels with the MVP export so evidence can be checked after the original run is gone. This may be large; selective corpus export is future work.
+The package retains selected knowledge, full versioned IR/corpus, evidence, examples, and an offline validator. The full corpus travels with this MVP export for independent verification, so mention its contents when the user intends to share it. Do not publish automatically.
 
-Use a new output parent for a rebuild. Do not hand-edit generated instructions: update the capability record, revalidate, and build a new package. Give the user the skill folder and `ir.json`; the IR can support future targets without reinterpreting raw transcripts.
+Explain what is ready, useful scope, limits, and meaningful disagreements. Link the generated SKILL.md using its absolute location. Offer a new task; if already supplied, read and apply the skill immediately. Demonstrate a suitable fixture when available, clearly labeled synthetic. Handle the generated skill's internal verification instruction yourself.

@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "discovery-assessment",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "type": "string"
+    },
+    "ir_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "no_capability_reason": {
+      "type": "string"
+    },
+    "weakly_supported": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "maxLength": 64
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "topic",
+          "reason",
+          "unit_ids"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true,
+      "maxItems": 3
+    }
+  },
+  "required": [
+    "schema_version",
+    "ir_hash",
+    "no_capability_reason",
+    "weakly_supported"
+  ],
+  "additionalProperties": false
+}

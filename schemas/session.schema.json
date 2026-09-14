@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "session",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "type": "string"
+    },
+    "active_run": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_built": {
+      "type": "object",
+      "properties": {
+        "run": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capability_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "maxLength": 64
+        }
+      },
+      "required": [
+        "run",
+        "capability_id"
+      ],
+      "additionalProperties": false
+    },
+    "pending_request": {
+      "type": "object",
+      "properties": {
+        "run": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intent": {
+          "enum": [
+            "compile",
+            "discover",
+            "build",
+            "use",
+            "compare"
+          ]
+        },
+        "select": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "build_all": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "run",
+        "intent",
+        "select",
+        "build_all"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "active_run"
+  ],
+  "additionalProperties": false
+}

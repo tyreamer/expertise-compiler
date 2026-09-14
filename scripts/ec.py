@@ -179,24 +179,16 @@ def normalize(raw, suffix):
 
 
 def ingest(input_dir, output, metadata=None):
+    from ingestors import adapter_for
+    records = adapter_for(input_dir).collect(metadata)
     input_dir, output = Path(input_dir).resolve(), Path(output).resolve()
-    require(input_dir.is_dir(), f'Input folder does not exist: {input_dir}')
     require(not output.is_relative_to(input_dir), 'Output must be outside input folder')
-    meta = read(metadata) if metadata else {}
-    require(type(meta) is dict, 'Metadata must map relative filenames to objects')
-    paths = sorted(p for p in input_dir.rglob('*') if p.is_file() and p.suffix.lower() in ('.txt', '.md', '.vtt', '.srt'))
-    require(paths, 'No .txt/.md/.vtt/.srt files found')
-    names = {p.relative_to(input_dir).as_posix() for p in paths}
-    require(set(meta) <= names, f'Metadata names absent from inputs: {set(meta)-names}')
     docs, blobs = [], {}
-    for path in paths:
-        require(path.resolve().is_relative_to(input_dir), 'Input symlink escapes folder')
-        filename = path.relative_to(input_dir).as_posix()
-        raw = path.read_bytes()
+    for record in records:
+        filename, raw, m = record.filename, record.raw, record.metadata
+        path = Path(filename)
         h = digest(raw)
         sid = 'src-' + digest((filename + '\0' + h).encode())[:24]
-        m = meta.get(filename, {})
-        require(type(m) is dict and not set(m)-{'title', 'creator', 'url', 'caption_type'}, f'Invalid metadata for {filename}')
         title = m.get('title')
         if title is None and path.suffix.lower() == '.md':
             heading = re.search(r'^#\s+(.+)$', raw.decode('utf-8-sig'), re.M)
@@ -267,7 +259,7 @@ def validate_sources(run):
     return corpus, docs, segments
 
 
-def validate_units(units, docs, segments):
+def validate_units(units, docs, segments, check_relations=True):
     require(type(units) is list and units, 'IR needs at least one unit')
     by_id = {}
     for unit in units:
@@ -286,9 +278,10 @@ def validate_units(units, docs, segments):
             sid = attribution['source_id']
             known = {docs[sid]['creator']} | {segments[(e['source_id'], e['segment_id'])]['speaker'] for e in unit['evidence'] if e['source_id'] == sid}
             require(attribution['name'] in known, f'{uid}: attribution not present in source metadata/speakers')
-    for uid, unit in by_id.items():
-        for relation in unit['relations']:
-            require(relation['target'] in by_id and relation['target'] != uid, f'{uid}: invalid relation target')
+    if check_relations:
+        for uid, unit in by_id.items():
+            for relation in unit['relations']:
+                require(relation['target'] in by_id and relation['target'] != uid, f'{uid}: invalid relation target')
     return by_id
 
 
@@ -495,6 +488,14 @@ def status(run):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
+    p = sub.add_parser('compile', help='Agent coordinator: start/resume and advance to the next reasoning task')
+    p.add_argument('input', nargs='?'); p.add_argument('output', nargs='?')
+    p.add_argument('--run', dest='run_path', help='Adopt/resume a specific existing run without new input')
+    p.add_argument('--project', default='.'); p.add_argument('--metadata')
+    p.add_argument('--intent', choices=['compile', 'discover', 'build', 'use', 'compare'])
+    p.add_argument('--select'); p.add_argument('--build-all', action='store_true')
+    p.add_argument('--reconciled', action='store_true')
+    p.add_argument('--tasks'); p.add_argument('--rubric')
     p = sub.add_parser('ingest'); p.add_argument('input'); p.add_argument('output'); p.add_argument('--metadata')
     for command in ('status', 'assemble', 'validate', 'discover'):
         p = sub.add_parser(command); p.add_argument('run')
@@ -502,7 +503,13 @@ def main():
     p = sub.add_parser('validate-package'); p.add_argument('folder')
     args = parser.parse_args()
     try:
-        if args.command == 'ingest':
+        if args.command == 'compile':
+            from workflow import compile_workflow
+            require(not args.run_path or not (args.input or args.output), '--run cannot be combined with input/output positionals')
+            result = compile_workflow(args.input, args.run_path or args.output, project=args.project, metadata=args.metadata,
+                                      intent=args.intent, select=args.select, build_all=args.build_all,
+                                      reconciled=args.reconciled, tasks=args.tasks, rubric=args.rubric)
+        elif args.command == 'ingest':
             result = ingest(args.input, args.output, args.metadata)
         elif args.command == 'status':
             result = status(args.run)
@@ -531,4 +538,6 @@ def main():
 
 
 if __name__ == '__main__':
+    # Lazy workflow/adapter imports must share this module's exception types.
+    sys.modules.setdefault('ec', sys.modules[__name__])
     sys.exit(main())

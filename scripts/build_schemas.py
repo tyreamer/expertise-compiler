@@ -46,8 +46,15 @@ schemas = {
               coverage=arr(obj(source_id=SID, unit_ids=arr(ID), note=EMPTY), 1)),
     'capability': capability,
     'capabilities': obj(schema_version=V, ir_hash=HASH, capabilities=arr(capability, 1, 3)),
+    'discovery-assessment': obj(schema_version=V, ir_hash=HASH, no_capability_reason=EMPTY,
+                                weakly_supported=arr(obj(topic=S, reason=S, unit_ids=arr(ID)), maximum=3)),
     'manifest': obj(schema_version=V, capability_id=ID, corpus_id=CID, ir_hash=HASH, files={'type': 'object'}),
 }
+schemas['session'] = obj(schema_version=V, active_run=S,
+                         last_built=obj(run=S, capability_id=ID),
+                         pending_request=obj(run=S, intent={'enum':['compile','discover','build','use','compare']},
+                                             select={'type':['string','null']}, build_all={'type':'boolean'}))
+schemas['session']['required'] = ['schema_version', 'active_run']
 
 if __name__ == '__main__':
     for name, schema in schemas.items():

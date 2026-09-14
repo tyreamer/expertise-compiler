@@ -1,168 +1,87 @@
 # Expertise Compiler
 
-Turn a folder of transcripts into **durable, source-traceable knowledge and reusable AI capabilities**. Local-first, MIT licensed, Python 3.10+, zero third-party runtime dependencies, and no model API calls.
+**Turn transcripts into reusable, source-backed AI capabilities.**
 
-The compiler is intended to outperform plain transcript Q&A on repeated tasks by producing reusable, provenance-preserving, capability-oriented artifacts: conditional procedures, conflict handling, clear boundaries, worked examples, and evidence you can audit. That is a product hypothesis to measure, not a claim that a skill always gives better answers. [The paired evaluation](docs/EVALUATION.md) lets you compare both approaches in your existing assistant.
+Install it once as a skill, then tell your AI:
 
-```text
-N transcript files → immutable source snapshot → versioned Expertise IR
-                                                  ↓
-                                      1–3 capability proposals
-                                                  ↓
-                                       portable Agent Skill
-```
+> Compile these transcripts.
 
-The **IR is the durable asset**. A skill is one export target. You can revise, reconcile, inspect, and reuse the knowledge without parsing the original captions again. This does not train model weights.
+Or point it at a folder:
 
-## Run the working demo
+> Compile the transcripts in ./input and tell me the most useful capabilities this material can support.
 
-Clone the repository and open its folder:
+Your assistant does the work and offers a small number of useful capabilities. Say **“Build capability 2”**, then **“Use it on this problem.”** No terminal workflow to learn.
 
-```text
-git clone https://github.com/tyreamer/expertise-compiler.git
-cd expertise-compiler
-```
+## Why this exists
 
-These commands work in PowerShell, macOS, and Linux; use `python3` instead of `python` if your system requires it.
+Transcripts are information. Expertise Compiler turns their methods, procedures, examples, disagreements, and limitations into capabilities you can use again.
+
+Instead of reconstructing advice in every chat, you get a reusable method with traceable evidence, clear limits, and an explanation of where sources disagree. Source statements stay distinct from AI inference and synthesis.
 
 ```text
-python --version
-python scripts/demo.py
-python scripts/ec.py status workspace/demo-build/run
-python scripts/ec.py validate workspace/demo-build/run
-python workspace/demo-build/packages/container-herb-reviewer/checks/validate.py
-python scripts/evaluate.py prepare
-python -m unittest discover -s tests -v
+Transcripts
+    ↓
+Expertise Compiler
+    ↓
+Structured Expertise
+    ↓
+Reusable AI Capabilities
 ```
 
-The demo ingests four synthetic transcripts across gardening, photography, and debugging. It assembles 12 **authored fixture units**, including a synthesized framework and contradictory opinions, then builds three working packages. It does not pretend to automatically extract new knowledge without an assistant. Identical reruns resume; edited demo artifacts require a new `--output workspace/demo-v2` folder.
+**No model API key. No hosted compiler service. Your existing AI does the reasoning.** The underlying knowledge remains yours to inspect and reuse beyond a single skill.
 
-Inspect:
+## Install once
 
-- `workspace/demo-build/run/ir.json`: full versioned knowledge and source coverage.
-- `workspace/demo-build/run/capabilities.json`: three supported proposals.
-- `workspace/demo-build/packages/container-herb-reviewer/SKILL.md`: executable review procedure.
-- `workspace/demo-build/packages/handheld-blur-reviewer/SKILL.md`: conditional camera troubleshooting.
-- `workspace/demo-build/packages/debug-experiment-planner/SKILL.md`: controlled debugging experiments.
-- `workspace/demo-build/evaluation/`: self-contained baseline and compiled prompts.
+### Codex
 
-## Compile your own transcripts with Codex or Claude Code
+Send Codex this message:
 
-1. Open this repository as the working folder in Codex, or open a terminal here and start your existing Claude Code session. No global skill installation is necessary: explicitly ask it to read the local `SKILL.md`.
-2. Put your UTF-8 `.txt`, `.md`, `.vtt`, or `.srt` files in a separate input folder, for example `workspace/input/`. Nested folders are supported. Keep the run output outside that input folder.
-3. Give the assistant this request, replacing paths and the optional goal:
+> Use $skill-installer to install the repository root at https://github.com/tyreamer/expertise-compiler as a personal skill named expertise-compiler, including its supporting files.
 
-```text
-Read ./SKILL.md and follow its compiler workflow. Ingest ./workspace/input
-into ./workspace/my-corpus. Extract source-backed knowledge, reconcile it,
-and propose no more than three useful capabilities. Preserve contradictory
-advice and distinguish explicit knowledge from inference and synthesis.
-Use the Python validators. My intended task is: [describe it, or omit this
-sentence to discover capabilities]. If my goal is supported, build its
-package in ./workspace/exports/CAPABILITY_ID and demonstrate it on a new task.
-```
+Codex's installer supports skills from other repositories. Restart Codex if the skill does not appear after installation. [Official installation guidance](https://learn.chatgpt.com/docs/build-skills).
 
-The assistant runs ingestion, writes extraction checkpoints, reconciles them, and writes a capability plan following `prompts/`. If no goal is specified, it will ask you to choose from the small proposal set. This is where your existing assistant supplies the reasoning; the command-line utilities only perform deterministic work.
+### Claude Code
 
-To resume after interruption:
+Send Claude Code this message:
 
-```text
-Read ./SKILL.md. Resume ./workspace/my-corpus using the status command and
-existing source checkpoints. Preserve completed work and finish validation
-and the chosen package.
-```
+> Install https://github.com/tyreamer/expertise-compiler as my personal expertise-compiler skill. Download and review the repository, then use its bundled installer to copy the complete skill to ~/.claude/skills/expertise-compiler. Preserve any existing installation.
 
-To use a generated capability, start a separate task/session and say:
+Claude Code discovers personal skills in that folder and can invoke them from matching natural-language requests. [Official skill guidance](https://code.claude.com/docs/en/skills).
 
-```text
-Read ./workspace/exports/CAPABILITY_ID/SKILL.md and its referenced knowledge
-and evidence. Apply that capability to this input: [your new task].
-```
+The assistant handles downloading and copying; you do not need to clone the repository or manually load SKILL.md. Your environment may ask for file-access permission. [Installation details and troubleshooting](docs/INSTALLATION.md).
 
-Generated folders use the [Agent Skills format](https://agentskills.io/specification): matching folder/name, YAML frontmatter, `SKILL.md`, and relative supporting references. Explicit local-file invocation works without relying on a particular app's automatic skill discovery settings.
+## Talk to it
 
-## Manual workflow and metadata
-
-```text
-python scripts/ec.py ingest workspace/input workspace/my-corpus --metadata workspace/metadata.json
-python scripts/ec.py status workspace/my-corpus
-```
-
-Omit `--metadata` when none is available. Its JSON object maps exact relative filenames to optional fields:
-
-```json
-{
-  "lesson.vtt": {
-    "title": "Lesson title",
-    "creator": "Creator supplied by the user",
-    "url": "https://www.youtube.com/watch?v=EXAMPLE",
-    "caption_type": "manual"
-  }
-}
-```
-
-Unknown metadata remains null or `unknown`; filenames are never treated as proof of a title or creator. Markdown H1 headings may supply a title. Caption type is `manual`, `automatic`, `synthetic`, or `unknown`. Metadata keys referring to absent files fail validation.
-
-Follow `prompts/extract.md` to create one `units/SOURCE_ID.json` checkpoint per source. Follow `prompts/reconcile.md`, then:
-
-```text
-python scripts/ec.py assemble workspace/my-corpus
-python scripts/ec.py validate workspace/my-corpus
-```
-
-Follow `prompts/discover-capabilities.md` to write `capabilities.json` bound to the `ir_hash` printed by `status`, then:
-
-```text
-python scripts/ec.py discover workspace/my-corpus
-python scripts/ec.py package workspace/my-corpus CAPABILITY_ID workspace/exports/CAPABILITY_ID
-python scripts/ec.py validate-package workspace/exports/CAPABILITY_ID
-```
-
-`discover` validates and displays assistant-authored proposals. It does not use keyword scoring or an undisclosed model. If the assistant is unavailable, ingestion and validation still work; semantic compilation awaits your assistant or manual authoring.
-
-## Durable artifacts and validation
-
-| Artifact | What it preserves |
+| Say this | What happens |
 | --- | --- |
-| `raw/` | Original transcript bytes, including duplicates and caption overlap |
-| `sources/` | Stable source IDs, metadata, byte hashes, raw and normalized segments, speaker labels and available times |
-| `corpus.json` | Source inventory and canonical document hashes |
-| `units/` | Resumable source-level extraction checkpoints |
-| `ir.json` and `history/` | Versioned knowledge units, relations, evidence, derivations, attribution, source coverage, and assembled revisions |
-| `capabilities.json` | One to three plans tied to a particular IR hash |
-| Exported skill | Instructions, selected knowledge, full IR and source corpus, evidence, synthetic examples, schemas, offline validator, file-hash manifest |
+| “Compile these transcripts.” | Your assistant reads the supplied material and proposes 1–3 useful capabilities. |
+| “What can I build from this content?” | It explains supported uses and meaningful gaps. |
+| “Build the strongest capabilities.” | It selects and builds up to three supported capabilities. |
+| “Build capability 2.” | It builds the option from the list you were shown. |
+| “Use that capability on this problem…” | It applies the method, with source-backed reasoning and limits. |
+| “Resume the compilation.” | It continues saved work in this project. |
+| “Compare this capability against raw transcript chat.” | It prepares matched new tasks and helps assess the results. |
 
-Supported unit types: concept, definition, principle, heuristic, procedure, framework, example, warning, failure_pattern, claim, opinion. `status` is explicit, inferred, or synthesized; it describes the transformation, not confidence or truth. Every unit has source/segment references and exact quotes. Cross-source synthesis retains all contributing evidence.
+For example, photography transcripts might support a **Handheld Blur Reviewer** that checks focus before suggesting shutter changes. The assistant explains what it can do, what the sources do not establish, and where the resulting skill is saved. It does not promise a full photography expert from a few narrow lessons.
 
-Validation rejects malformed schema data, duplicate JSON keys/IDs, unknown fields, absent segments, altered quotes, invalid attribution, stale source/IR bindings, missing related units, unresolved packaging structure, path escapes, and file tampering. It re-normalizes original bytes to detect edited segment text. The published schemas are Draft 2020-12; the dependency-free validator implements the exact subset used here and rejects unsupported schema keywords. Regenerate schema files with `python scripts/build_schemas.py` after intentionally changing the schema definitions.
+Once your capability is ready, send a real task or ask for a worked example. Your assistant validates and uses it for you. The resulting skill folder is portable, and its evidence travels with it.
 
-Validation proves structural integrity and evidence location. It **does not prove** that an interpretation follows from its quote, that a source is correct, that extraction is exhaustive, or that a procedure is useful. Those require assistant/human review and held-out evaluation. Manifest hashes detect accidental changes; they are not cryptographic signatures or a security boundary against someone rewriting both data and validator.
+## What you need
 
-## Compare against transcript chat
+Use local Codex or Claude Code with permission to read files and run local tools. A local Python 3.10+ runtime is needed underneath; your assistant checks for it and helps with setup if missing. There are no additional Python packages to install for normal use.
 
-```text
-python scripts/evaluate.py prepare
-```
+Supply UTF-8 `.txt`, `.md`, `.vtt`, or `.srt` transcripts as accessible attachments or a folder. YouTube fetching is not implemented yet; exported transcripts work now, and original video URLs can be preserved with them.
 
-Paste `workspace/demo-build/evaluation/baseline-prompt.md` and `compiled-prompt.md` into two fresh sessions using the same model. These prompts are self-contained and also work in ChatGPT or Claude web chats; the compiler itself needs local Python and an assistant with file access, or manual saving of the assistant's JSON outputs.
+Work stays in your local project. Your chosen AI service may still process content remotely and have subscription or usage limits. A plain web chat without local file/tool access cannot run the installed compiler autonomously, though comparison prompts can be used there.
 
-Save the returned arrays as `workspace/baseline-responses.json` and `workspace/compiled-responses.json`:
+## Built to earn its value
 
-```text
-python scripts/evaluate.py score workspace/baseline-responses.json --arm baseline --output workspace/baseline-report.json
-python scripts/evaluate.py score workspace/compiled-responses.json --arm compiled --output workspace/compiled-report.json
-```
+The goal is better repeated work than attaching transcripts and asking questions: durable methods, preserved evidence, honest scope, reconciled disagreement, and portable skills. That improvement should be measured, not assumed.
 
-Compare structured decisions and citation errors, then manually rate faithfulness, actionability, conflict handling, and reuse using `fixtures/held-out/rubric.json`. Record setup time and corrections. A schema-valid answer is not necessarily a good answer; the harness never declares a quality win automatically. See [full evaluation protocol](docs/EVALUATION.md).
+Ask for a comparison to prepare matched tasks for raw transcripts and the compiled capability. Independent fresh sessions may be needed; the assistant prepares the material and processes the answers. A tie is a valid result. [How comparisons work](docs/EVALUATION.md).
 
-## Scope and current limits
+MIT licensed. Synthetic examples cover gardening, photography, and debugging. Imported source material retains its ownership and licensing.
 
-- **Local-first:** utilities perform no network requests and have no paid API dependency. Your chosen assistant may use a hosted service or have subscription/usage limits; that service's processing is not made local by this repository. Use a local model-capable assistant if fully offline reasoning is required.
-- **Transcript contract:** UTF-8 files are stable inputs. YouTube fetching is deliberately not implemented in this MVP. Supply transcripts and optional original URLs. No scraping, audio transcription, or SDK setup is needed.
-- **Normalization:** SRT/VTT cues preserve available start/end times and leading voice tags; plain dumps support leading `MM:SS`/`HH:MM:SS` (optionally bracketed) and `Name:` labels. Missing times/speakers remain null. Multi-voice markup within a single cue is not diarized. Original bytes remain available. Plain paragraphs are not automatically split into arbitrary token-sized chunks.
-- **Scale:** source checkpoints support interrupted work, but the MVP loads the corpus for validation and reconciliation. Very large corpora require staged assistant review and may exceed context/memory; there is no automatic retrieval index or parallel extraction scheduler.
-- **Revisions:** ingestion publishes a complete snapshot or nothing. Changed inputs/metadata require a new run. Assembly saves content-addressed IR history; extraction edits between assemblies are not separately journaled. Package builds require a new destination and publish only after validation.
-- **Packaging:** the full corpus accompanies every skill for independent verification, including sources outside the selected capability. Review that content before sharing. The MIT license covers this compiler and synthetic fixtures; importing material does not change its ownership or licensing.
-- **No proof of superiority yet:** the demo is authored and the checker is deterministic. Actual paired model answers and human ratings remain to be collected.
+## For contributors
 
-See [DESIGN.md](DESIGN.md) for the product thesis and architectural tradeoffs. Contributions should include focused tests for changes to evidence, normalization, resume behavior, or package integrity.
+[Development and tests](docs/DEVELOPING.md) · [Internal command reference](docs/CLI.md) · [Architecture](DESIGN.md) · [Conversational acceptance flows](docs/ASSISTANT-FLOWS.md)
