@@ -1,6 +1,6 @@
 # Expertise Compiler: alpha testing guide
 
-Bring material you trust and a real task you need help completing. Expertise Compiler should turn that material into usable work while saving the underlying expertise, evidence and methods for future tasks.
+Bring material you trust. You don't need to know what to build: Expertise Compiler should show you its strongest supported opportunities, then build one you choose. If you already have a task, bring it too. The underlying expertise, evidence and methods should remain reusable for future work.
 
 We're testing whether that saves effort and improves your work compared with attaching transcripts to an ordinary AI conversation. We haven't established that advantage yet. Honest failures and reasons you wouldn't use it again are especially useful feedback.
 
@@ -12,7 +12,17 @@ Choose one project folder and keep using it throughout the test. Start with a sm
 
 Use material you are authorized to process. For client or internal content, follow your organization's rules and redact where needed. Files are stored locally, but your chosen AI service may process their contents remotely. A plain web chat without local file and tool access cannot run this compiler autonomously.
 
-## 1. Bring a goal, not a command
+## 1. Discover what your content can become
+
+For the discovery test, give a normal user this exact prompt with their transcript files:
+
+> Use Expertise Compiler with these transcripts. I think this material is valuable, but I don't know what I want to build. Save it as My Test Collection, show me the strongest things it could become, and recommend what to build first. Explain what I would give each one, what I would get back, and the important limits.
+
+Check whether the ranked Capability Map helps you understand useful possibilities without having to choose technical formats. Does it explain why the sources support each opportunity? Are the ideas distinct and realistic, or attractive names for unsupported promises? A narrow map or an honest gap is better than five invented agents.
+
+Reply **“Build #2”** (or name the opportunity you prefer). The assistant should build that saved opportunity directly, without asking you to translate it into an artifact type or resupply the sources. A reusable reviewer can be built before you supply a specific draft to review. Then try the finished method on real work and judge that result too.
+
+If you already have a goal, you can bypass discovery:
 
 Tell your assistant what you're trying to accomplish and what a useful result would look like. For example:
 
@@ -51,7 +61,7 @@ Record any repeated explanation, missing context or manual help. Collections are
 
 Add one relevant transcript, or supply a revised file and explicitly ask to replace its earlier version. Ask what changed and rerun an affected task.
 
-Check whether the new result accounts for the change and whether the earlier result remains available. If no relevant conclusion should change, saying so is a valid outcome. Record stale advice, lost history or repeated setup work.
+Check whether the new result accounts for the change and whether the earlier result remains available. Also ask “What changed in the Capability Map after adding these sources?” Check the explanation against the material: new support, weakened ideas and disagreements should remain visible, and the earlier map should remain available. If no relevant conclusion should change, saying so is a valid outcome. Record stale advice, lost history or repeated setup work.
 
 ## 5. Compare with ordinary transcript chat
 
@@ -77,12 +87,14 @@ Send this short report to the person who invited you. You can omit confidential 
 Assistant/client and model:
 Compiler version or commit (ask the facilitator if unknown):
 Material: domain, file count, approximate length:
-My real goal and what success meant:
+My initial goal, if any, and what success meant:
+Capability Map: useful opportunities? Unsupported suggestions? Clear inputs/outputs?
+Selected opportunity: did it build directly without an asset-type question?
 Setup/preparation effort and help needed:
 First result: usable / usable after edits / not usable, because:
 One interpretation or evidence problem, if any:
 Fresh-session second task: found the collection? Re-upload needed?
-Source update: reflected correctly? Earlier result still available?
+Source update: reflected correctly? Earlier result and map still available?
 Comparison with ordinary chat: better / similar / worse / not run:
 Approximate effort for each approach: first task / second task / update:
 Would I use this again for actual work? Why or why not?

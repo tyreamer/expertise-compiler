@@ -1,0 +1,30 @@
+[
+  {"domain":"photography","title":"Portrait Troubleshooting Guide","second_title":"Portrait Critic","categories":["do","plan"],"second_categories":["review","improve"],"input":"A portrait and capture settings","output":"Ordered diagnostic checks and a retake plan","rules":[
+    ["procedure","Check the focus point first, then isolate subject motion before changing shutter speed."],
+    ["principle","Judge sharpness at the intended output size, not only at maximum magnification."],
+    ["example","A sharp background with soft eyes suggests misplaced focus; increasing shutter speed alone will not move focus."],
+    ["warning","These checks concern focus and motion blur; they do not diagnose lighting or composition."]]},
+  {"domain":"sales","title":"Discovery Call Reviewer","second_title":"Discovery Preparation Guide","categories":["review","evaluate"],"second_categories":["do","plan"],"input":"A discovery-call transcript","output":"Evidence-linked missed questions and suggested follow-ups","rules":[
+    ["procedure","Ask about the last occurrence of the problem, its consequence, and who owns the next step."],
+    ["principle","Evaluate qualification by concrete past behavior and ownership rather than enthusiasm alone."],
+    ["example","An enthusiastic prospect who cannot name a recent incident needs more discovery before qualification."],
+    ["warning","An exploratory call cannot establish purchasing authority without direct confirmation."]]},
+  {"domain":"architecture","title":"Architecture Review Checklist","second_title":"Access-Control Troubleshooting Guide","categories":["review","evaluate"],"second_categories":["do","plan"],"input":"An access-control design","output":"Scoped design issues, verification steps and unresolved decisions","rules":[
+    ["procedure","Identify principal, action and resource; test expiry and revocation separately."],
+    ["principle","The presence of a credential alone does not establish permission for an action on a resource."],
+    ["example","A valid user token for reading one project must not automatically permit deleting another project."],
+    ["warning","These access-control checks are not a complete security assessment."]]},
+  {"domain":"strategy","title":"Market Decision Framework","second_title":"Market Evidence Reviewer","categories":["decide","plan"],"second_categories":["review","evaluate"],"input":"Two market hypotheses and observed customer behavior","output":"Conditional comparison, missing evidence and next experiments","rules":[
+    ["procedure","List the target buyers, their recent problem behavior and their commitment to a trial, then compare alternatives."],
+    ["principle","A concrete trial commitment is stronger evidence than a favorable comment."],
+    ["example","Three scheduled trial customers can provide more actionable evidence than fifty positive comments."],
+    ["warning","Early trial commitments do not prove retention or the size of a market."]]},
+  {"domain":"reference","title":"Observatory Reference Guide","second_title":"Observatory Learning Guide","categories":["reference"],"second_categories":["learn"],"input":"A question about the supplied observatory notes","output":"A bounded answer with source evidence","rules":[
+    ["definition","In these fictional notes, the Meridian observatory calls its northern room the Blue Hall."],
+    ["claim","The fictional Blue Hall contains three demonstration telescopes."]]},
+  {"domain":"conflicting","title":"Evidence Threshold Comparison","second_title":"Decision Policy Evaluator","categories":["decide"],"second_categories":["review","evaluate"],"input":"A proposed trial decision and its evidence","output":"Two conditional judgments preserving the experts' different thresholds","conflicting":true,"rules":[
+    ["principle","Expert A recommends launching a small trial after one confirmed customer commitment."],
+    ["principle","Expert B recommends waiting for three independent customer commitments before launching a small trial."],
+    ["example","With one confirmed commitment, A would launch while B would wait."],
+    ["warning","These thresholds describe small reversible trials, not full product launches."]]}
+]

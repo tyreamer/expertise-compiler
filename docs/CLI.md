@@ -23,7 +23,22 @@ python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "
 python /path/to/expertise-compiler/scripts/ec.py validate-build BUILD_FOLDER
 ```
 
-Use --action save to archive without a goal, --action explore for optional discovery, and --adopt OLD_RUN to copy an existing run. Do not repeat --input on continuation calls. The assistant saves briefs from conversation, handles returned tasks and acknowledges actual review; users do not operate this CLI. [Complete phase contract](../prompts/goal-work.md).
+Use --action save to archive without a goal, --action explore to discover a Capability Map, and --adopt OLD_RUN to copy an existing run. Do not repeat --input on continuation calls. The assistant saves briefs from conversation, handles returned tasks and acknowledges actual review; users do not operate this CLI. [Complete phase contract](../prompts/goal-work.md).
+
+### Capability Map operations (assistant-operated)
+
+```text
+python scripts/ec.py map --project PROJECT --collection NAME
+python scripts/ec.py map --project PROJECT --collection NAME --reconciled
+python scripts/ec.py map --project PROJECT --collection NAME --draft RETURNED_DRAFT_PATH
+python scripts/ec.py map --project PROJECT --collection NAME --action select --select 2
+python scripts/ec.py map --project PROJECT --collection NAME --action list
+python scripts/ec.py map --project PROJECT --collection NAME --action inspect --map-id MAP_ID
+python scripts/ec.py map --project PROJECT --collection NAME --action compare --before OLD_MAP --map-id NEW_MAP
+python scripts/ec.py map --project PROJECT --collection NAME --regenerate
+```
+
+Discovery returns preparation tasks, then `discover_opportunities`, then `capability_map`. The assistant authors a bound draft and acknowledges semantic review. `--regenerate` requests another assessment, even for unchanged IR; submit it using `--draft`. Selection accepts a shown number, title or stable ID and enters the normal build coordinator with a saved opportunity brief. Inspecting a map makes it the last shown map; stale maps remain readable but cannot silently drive a current build. No asset type is required. [Discovery contract](../prompts/opportunity-discovery.md).
 
 New briefs record lowercase intent (create/review/improve/decide/plan/do/learn/reference) and intent_reason; target is inferred from that saved field. --target checklist is retained for legacy briefs only. New typed results use outcome schema 1.1 and save a readable method, not an automatic skill package. --action prepare extracts and reconciles knowledge without a goal, result or skill. --action save only preserves sources.
 

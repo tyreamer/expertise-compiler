@@ -182,10 +182,8 @@ def work(*, project='.', input=None, metadata=None, collection=None, name=None, 
         state['goal_question_asked'] = True; write(state_path,state)
         return respond('needs_goal',message=None if asked else GOAL_QUESTION,already_asked=asked)
     if action == 'explore':
-        from workflow import compile_workflow
-        result = compile_workflow(output=str(run),project=project,intent='discover',reconciled=reconciled)
-        if result['phase'] == 'choose': result['phase'] = 'explored'
-        return {**respond(result['phase']),**result}
+        from capability_maps import capability_map
+        return capability_map(project=project,collection=data['collection_id'],reconciled=reconciled)
     brief_id = state['brief_id']; target = target or state.get('target','review')
     brief_data = read(folder / 'briefs' / f'{brief_id}.json')
     require(not brief_data.get('intent') or target==brief_data['intent'],'New intent requires a new saved brief')

@@ -93,6 +93,28 @@ schemas['outcome'] = obj(schema_version={'const':'1.1'}, brief_id=ID, ir_hash=HA
                      title=S, content=S, unit_ids=arr(ID), status={'enum':['explicit','inferred','synthesized','original','user_context']})),
     disagreements=arr(S), limitations=arr(S), unsupported=arr(S), additional_general_advice=arr(S))
 
+# Discovery is derived from IR; it does not add recommendation fields to knowledge units.
+CATEGORIES = ['create','review','improve','decide','plan','do','learn','reference','automate','evaluate']
+factor = obj(level={'enum':['high','medium','low']}, reason=S)
+opportunity = obj(opportunity_id=ID, title=S, problem=S, input=S, transformation=S, output=S,
+    categories=arr({'enum':CATEGORIES},1), support={'enum':['strong','supported','weak']},
+    support_reason=S, unit_ids=arr(ID,1),
+    grounding=obj(rules=arr(ID), procedures=arr(ID), criteria=arr(ID), examples=arr(ID), conditions=arr(ID)),
+    boundaries=arr(S,1), conflicts=arr(obj(unit_ids=arr(ID,2), handling=S)),
+    reuse=factor, actionability=factor, judgment=factor, saved_work=factor,
+    beyond_qa=obj(verdict={'enum':['distinct','modest','none']}, reason=S),
+    targets=arr(obj(label=S, delivery={'enum':['text','skill','future']}, description=S),1),
+    ranking_reason=S)
+schemas['capability-map-draft'] = obj(schema_version={'const':'1.0'}, binding_hash=HASH,
+    category_assessments=arr(obj(category={'enum':CATEGORIES}, reason=S, unit_ids=arr(ID)),10,10),
+    opportunities=arr(opportunity,0,8), no_opportunities_reason=EMPTY,
+    semantic_review=obj(status={'const':'assistant-reviewed'}, limitations=S))
+schemas['capability-map'] = obj(schema_version={'const':'1.0'}, map_id=ID,
+    binding=obj(collection_id=ID, source_revision=ID, ir_hash=HASH, compiler_version=S,
+                compiler_hash=HASH, discovery_version=S),
+    draft=schemas['capability-map-draft'], recommended_ids=arr(ID,0,5),
+    source_coverage={'type':'object'}, unit_hashes={'type':'object'})
+
 if __name__ == '__main__':
     for name, schema in schemas.items():
         write(Path(__file__).resolve().parent.parent / 'schemas' / f'{name}.schema.json',

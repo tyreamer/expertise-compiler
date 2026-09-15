@@ -1,0 +1,428 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "capability-map-draft",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "binding_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "category_assessments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "enum": [
+              "create",
+              "review",
+              "improve",
+              "decide",
+              "plan",
+              "do",
+              "learn",
+              "reference",
+              "automate",
+              "evaluate"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "maxLength": 64
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "category",
+          "reason",
+          "unit_ids"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 10,
+      "uniqueItems": true,
+      "maxItems": 10
+    },
+    "opportunities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "opportunity_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "maxLength": 64
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "problem": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transformation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "output": {
+            "type": "string",
+            "minLength": 1
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "create",
+                "review",
+                "improve",
+                "decide",
+                "plan",
+                "do",
+                "learn",
+                "reference",
+                "automate",
+                "evaluate"
+              ]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "support": {
+            "enum": [
+              "strong",
+              "supported",
+              "weak"
+            ]
+          },
+          "support_reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "maxLength": 64
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "grounding": {
+            "type": "object",
+            "properties": {
+              "rules": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                  "maxLength": 64
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "procedures": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                  "maxLength": 64
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "criteria": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                  "maxLength": 64
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "examples": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                  "maxLength": 64
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              },
+              "conditions": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                  "maxLength": 64
+                },
+                "minItems": 0,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "rules",
+              "procedures",
+              "criteria",
+              "examples",
+              "conditions"
+            ],
+            "additionalProperties": false
+          },
+          "boundaries": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "conflicts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "unit_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+                    "maxLength": 64
+                  },
+                  "minItems": 2,
+                  "uniqueItems": true
+                },
+                "handling": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "unit_ids",
+                "handling"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "reuse": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "level",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "actionability": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "level",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "judgment": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "level",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "saved_work": {
+            "type": "object",
+            "properties": {
+              "level": {
+                "enum": [
+                  "high",
+                  "medium",
+                  "low"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "level",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "beyond_qa": {
+            "type": "object",
+            "properties": {
+              "verdict": {
+                "enum": [
+                  "distinct",
+                  "modest",
+                  "none"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "verdict",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "delivery": {
+                  "enum": [
+                    "text",
+                    "skill",
+                    "future"
+                  ]
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "label",
+                "delivery",
+                "description"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "ranking_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "opportunity_id",
+          "title",
+          "problem",
+          "input",
+          "transformation",
+          "output",
+          "categories",
+          "support",
+          "support_reason",
+          "unit_ids",
+          "grounding",
+          "boundaries",
+          "conflicts",
+          "reuse",
+          "actionability",
+          "judgment",
+          "saved_work",
+          "beyond_qa",
+          "targets",
+          "ranking_reason"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true,
+      "maxItems": 8
+    },
+    "no_opportunities_reason": {
+      "type": "string"
+    },
+    "semantic_review": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "const": "assistant-reviewed"
+        },
+        "limitations": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "limitations"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "binding_hash",
+    "category_assessments",
+    "opportunities",
+    "no_opportunities_reason",
+    "semantic_review"
+  ],
+  "additionalProperties": false
+}

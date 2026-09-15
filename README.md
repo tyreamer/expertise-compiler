@@ -6,7 +6,13 @@ Built primarily for AI engineers, developers, architects, consultants, agencies,
 
 **One corpus, multiple independent builds, preserved evidence.** [Product north star](NORTH_STAR.md) · [Architecture and current limits](DESIGN.md)
 
+**You don't need to know what to build.** Give Expertise Compiler content you think is valuable. It examines the knowledge, methods, judgment, procedures, examples and criteria inside, then shows the strongest supported things that material can become.
+
 The current conversational interface is a Codex/Claude Code skill that runs the local compiler. Install that interface, then tell your AI:
+
+> Here are some transcripts I think are valuable. I don't know what I want to build. Save them and show me the most useful things they could become. Recommend what to build first.
+
+Or bring a task you already have:
 
 > Save these as Leadership. Use them to review this message before I send it to my team.
 
@@ -14,7 +20,29 @@ Or point it at a folder:
 
 > Use the transcripts in ./input to review my plan in ./plan.md. Preserve my original and save an improved version with the reasons for your changes.
 
-Your assistant infers the goal, applies supported methods and produces the useful result: a draft, review, decision analysis, plan, guided procedure, lesson or source-backed answer. You do not choose compiler stages or fill out forms. If you supply content without a goal or archive instruction, it asks what you hope to accomplish. **“Just save for later”** and **“explore what's useful”** are valid paths.
+With a goal, your assistant applies supported methods and produces the useful result: a draft, review, decision analysis, plan, guided procedure, lesson or source-backed answer. Without a goal, it produces a concise, ranked **Capability Map**. You do not choose compiler stages, intent labels or asset types. **“Just save for later”** remains a valid path and does not force discovery.
+
+## See what your content can become
+
+A Capability Map explains each opportunity's problem, input, transformation, output, source support, repeat-use value and limits. It assesses whether a reusable method adds value beyond ordinary transcript Q&A. A fact-heavy collection may support reference and learning while lacking the procedures needed for a reliable reviewer.
+
+```text
+Your transcript collection
+          ↓
+Durable expertise + source evidence
+          ↓
+Capability Map: strongest supported opportunities
+          ↓
+“Build #2”
+          ↓
+Ready-to-use method with evidence and an example
+```
+
+For example, our small synthetic photography fixture supports a **Portrait Troubleshooting Guide** and **Portrait Critic** for focus and motion blur. It does not establish a lighting coach or general visual evaluator. Sales and architecture fixtures use the same discovery logic, with different evidence. These are authored examples, not live effectiveness benchmarks. [Fixture examples and validation limits](fixtures/opportunities/README.md).
+
+Choose the useful capability first. The compiler carries its evidence, boundaries and input/output contract directly into the build. Text methods are available now; skill export is optional. Other runtime formats are marked as future possibilities, never presented as delivered agents or services.
+
+Maps are saved against source, knowledge, compiler and discovery versions. Ask **“What changed in the Capability Map after adding these sources?”** to compare new opportunities, changed support and disagreements. Earlier maps remain inspectable. The map is a replaceable interpretation; it never overwrites the underlying expertise.
 
 ## Why this exists
 
@@ -23,7 +51,9 @@ Transcripts are information. Expertise Compiler turns their methods, procedures,
 The most valuable output is work you can act on. A collection about a subject can support writing, critique, decisions, guided work or learning when its sources provide sufficient methods. Underneath the result is a reusable method with traceable evidence, clear limits and preserved disagreements. Source statements stay distinct from AI inference and private context. The archive can support tomorrow's different goal without starting from scratch.
 
 ```text
-Source collection → durable expertise IR → user build intent
+Source collection → durable expertise IR → Capability Map (if exploring)
+                                              ↓
+                                   selected / user build intent
                                               ↓
                               select / extend relevant expertise
                                               ↓
@@ -68,7 +98,7 @@ Bring material you trust and explain what you want to accomplish. You do not nee
 
 In your own words, tell the assistant what you're working on, provide the relevant material or draft, and describe what would make the result useful. Include constraints or exclusions when they matter. These are conversational details, not required form fields; the assistant should use the context already available and ask only for missing information that affects the work.
 
-If you don't have a task yet, say what interests you about the material and ask it to explore supported uses. You can also simply ask it to save the sources for later without producing an output.
+If you don't have a task yet, supplying valuable content is enough: the assistant discovers supported opportunities. You can also simply ask it to save the sources for later without producing an output.
 
 The assistant should deliver usable work, explain its evidence and limits, and save the underlying expertise for reuse. Tomorrow, reopen the same project and describe a different task using that named collection. You shouldn't have to reattach the sources or commit to the first output format. Ask for a skill export only when you need one.
 

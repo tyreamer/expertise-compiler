@@ -1,0 +1,7 @@
+Expert A recommends launching a small trial after one confirmed customer commitment.
+
+Expert B recommends waiting for three independent customer commitments before launching a small trial.
+
+With one confirmed commitment, A would launch while B would wait.
+
+These thresholds describe small reversible trials, not full product launches.

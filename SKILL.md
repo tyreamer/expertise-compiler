@@ -1,6 +1,6 @@
 ---
 name: expertise-compiler
-description: Turn supplied content into reusable expertise for the user's goal. Save and reuse named collections; create, review, improve, decide, plan, perform guided work, learn, or answer questions using source-backed methods. Also handles collection updates, revision comparisons, archive/restore and optional skill exports. The assistant operates the workflow conversationally across domains.
+description: Discover what valuable content can become, or turn it into reusable expertise for a known goal. Produce a grounded Capability Map, recommend what to build first, and build a selected opportunity. Save and reuse collections for creation, review, decisions, guided work, learning and reference; handle revisions and optional skill exports conversationally.
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 This installed skill is a conversational interface to the core compiler, not the product's architectural definition. [NORTH_STAR.md](NORTH_STAR.md) defines the durable, provider-independent expertise representation and extensible build direction. Today's intent contracts and Agent Skills export are supported interfaces/targets, not the limits of the expertise model.
 
-Give your AI content you trust, tell it what you want to accomplish, and turn that material into reusable expertise that helps you do the work. When a goal is supplied, finish the useful outcome; do not stop at a menu of capabilities. No domain-specific routing or creator persona is the product.
+Give your AI content you trust. If you don't know what to build, discover its strongest supported opportunities. When a goal is supplied, finish the useful outcome; do not stop at a map. No domain-specific routing or creator persona is the product.
 
 Requires local file/command access and Python 3.10+. No model API calls or third-party Python runtime packages. You supply reasoning and operate the scripts. Never ask users to run Python, edit JSON, choose internal IDs or manage stages. Do not claim execution without saved, validated artifacts.
 
@@ -16,7 +16,7 @@ Requires local file/command access and Python 3.10+. No model API calls or third
 
 Infer objective, relevant context, constraints, supplied work, desired result and usefulness criteria from conversation. Briefly reflect your understanding and proceed without unnecessary confirmation. Save a private brief following [goal-work.md](prompts/goal-work.md). User context is not source evidence.
 
-If content arrives without a goal or archive instruction, ask once: “What are you hoping this material helps you do?” Ask only for information that materially affects the work. “Just save for later” archives without extraction. “Save these as Leadership” prepares a collection and broadly useful knowledge without forcing a result or skill. “Explore what's useful” can end with supported possibilities.
+If content arrives without a goal or archive instruction, save it and produce a Capability Map following [opportunity-discovery.md](prompts/opportunity-discovery.md). Don't require the user to invent a goal. Also use that flow for “What can I build?”, “What should I build first?”, or “Show me what this collection is capable of.” “Build #2” or a named opportunity continues directly from the saved map. Ask only for information that materially affects the work. “Just save for later” archives without extraction. “Save these as Leadership” prepares knowledge without forcing a map or result.
 
 Infer the internal intent from meaning and context: CREATE, REVIEW, IMPROVE, DECIDE, PLAN, DO, LEARN or REFERENCE. Persist the lowercase intent and a short reason in the brief. See [intent guidance](prompts/intents.md); these labels are not a user menu. Do not force an absent draft into CREATE or a review-shaped result into LEARN. Preserve supplied work and save changes separately. Keep user context distinct from source evidence.
 

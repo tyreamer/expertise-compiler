@@ -500,6 +500,11 @@ def status(run):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
+    p = sub.add_parser('map', help='Discover, inspect, compare or build from a saved Capability Map')
+    p.add_argument('--project', default='.'); p.add_argument('--collection')
+    p.add_argument('--action', choices=['discover','list','inspect','compare','select'], default='discover')
+    p.add_argument('--draft'); p.add_argument('--map-id'); p.add_argument('--before'); p.add_argument('--select')
+    p.add_argument('--regenerate', action='store_true'); p.add_argument('--reconciled', action='store_true')
     p = sub.add_parser('work', help='Goal-driven collection and result coordinator, operated by the assistant')
     p.add_argument('--project', default='.')
     p.add_argument('--input'); p.add_argument('--metadata'); p.add_argument('--collection'); p.add_argument('--name')
@@ -524,7 +529,12 @@ def main():
     p = sub.add_parser('validate-package'); p.add_argument('folder')
     args = parser.parse_args()
     try:
-        if args.command == 'work':
+        if args.command == 'map':
+            from capability_maps import capability_map
+            result = capability_map(project=args.project,collection=args.collection,action=args.action,
+                                    draft=args.draft,map_id=args.map_id,before=args.before,select=args.select,
+                                    regenerate=args.regenerate,reconciled=args.reconciled)
+        elif args.command == 'work':
             from goal_workflow import work
             result = work(project=args.project, input=args.input, metadata=args.metadata, collection=args.collection,
                           name=args.name, action=args.action, brief=args.brief, target=args.target, adopt=args.adopt,

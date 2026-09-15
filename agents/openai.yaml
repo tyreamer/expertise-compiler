@@ -1,6 +1,6 @@
 interface:
   display_name: "Expertise Compiler"
-  short_description: "Use saved expertise to create, decide, learn and do work"
-  default_prompt: "Use $expertise-compiler to apply these sources to my goal, improve my work, and save the collection and reusable method."
+  short_description: "Discover what your content can become, then build it"
+  default_prompt: "Use $expertise-compiler to save these sources, discover their strongest supported opportunities, and recommend what to build first."
 policy:
   allow_implicit_invocation: true

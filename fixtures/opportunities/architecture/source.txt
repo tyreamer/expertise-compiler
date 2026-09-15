@@ -1,0 +1,7 @@
+Identify principal, action and resource; test expiry and revocation separately.
+
+The presence of a credential alone does not establish permission for an action on a resource.
+
+A valid user token for reading one project must not automatically permit deleting another project.
+
+These access-control checks are not a complete security assessment.

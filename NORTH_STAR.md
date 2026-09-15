@@ -20,6 +20,8 @@ These dimensions can be selected independently. Knowledge does not imply persona
 
 **One corpus can be compiled multiple ways for different goals without re-ingesting or destroying the original expertise representation.**
 
+Users do not need to invent a goal first. Capability Maps provide a core exploration experience: derive the strongest supported opportunities from saved expertise, explain input → transformation → output and limits, then carry the selected opportunity directly into a build. Maps are versioned interpretations, separate from source truth and regeneratable without changing IR. A known goal bypasses the map; archive-only requests still preserve content without forcing discovery.
+
 Selection creates a build-specific view of expertise, not a destructive filter on the collection. If a new goal needs something not extracted before, revisit archived sources and extend the IR with a new revision. Do not assume the first extraction was exhaustive.
 
 For example, the same collection of 50 expert videos could independently support:

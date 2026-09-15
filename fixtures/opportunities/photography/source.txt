@@ -1,0 +1,7 @@
+Check the focus point first, then isolate subject motion before changing shutter speed.
+
+Judge sharpness at the intended output size, not only at maximum magnification.
+
+A sharp background with soft eyes suggests misplaced focus; increasing shutter speed alone will not move focus.
+
+These checks concern focus and motion blur; they do not diagnose lighting or composition.
