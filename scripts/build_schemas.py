@@ -115,6 +115,24 @@ schemas['capability-map'] = obj(schema_version={'const':'1.0'}, map_id=ID,
     draft=schemas['capability-map-draft'], recommended_ids=arr(ID,0,5),
     source_coverage={'type':'object'}, unit_hashes={'type':'object'})
 
+# Cheap capture envelopes and personal annotations are independent of source/IR schemas.
+attachment = obj(path=S, filename=S)
+attachment['properties'].update(sha256=HASH, byte_size={'type':'integer','minimum':0})
+schemas['capture'] = obj(schema_version={'const':'1.0'}, capture_id=ID, captured_at=S,
+    original_value=S, source_type={'enum':['url','text','image','video','file','unknown']},
+    capture_status={'const':'captured'}, processing_status={'const':'pending'},
+    provenance=obj(adapter=S, origin=EMPTY), shared_text=EMPTY, url=EMPTY, title=EMPTY,
+    user_note=EMPTY, requested_collections=arr(S), attachments=arr(attachment))
+schemas['capture']['required'] = ['schema_version','capture_id','captured_at','original_value','source_type',
+                                  'capture_status','processing_status','provenance']
+schemas['capture-annotation'] = obj(schema_version={'const':'1.0'}, annotation_id=ID, capture_id=ID,
+    annotated_at=S, user_note=EMPTY, add_collections=arr(S))
+schemas['capture-state'] = obj(schema_version={'const':'1.0'}, capture_id=ID, envelope_hash=HASH,
+    imported_at=S, collection_ids=arr(ID), source_ids=arr(SID), attachment_blobs=arr(obj(path=S, blob_hash=HASH)),
+    annotation_ids=arr(ID), capture_status={'const':'captured'},
+    processing_status={'enum':['pending','awaiting_retrieval','partially_processed','processed','needs_attention']},
+    issues=arr(S))
+
 if __name__ == '__main__':
     for name, schema in schemas.items():
         write(Path(__file__).resolve().parent.parent / 'schemas' / f'{name}.schema.json',

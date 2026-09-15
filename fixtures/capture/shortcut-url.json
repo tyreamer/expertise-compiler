@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "capture_id": "capture-00000000-0000-4000-8000-000000000001",
+  "captured_at": "2026-09-15T12:00:00Z",
+  "original_value": "https://example.com/interesting-talk",
+  "source_type": "url",
+  "capture_status": "captured",
+  "processing_status": "pending",
+  "provenance": {"adapter": "iphone-shortcut", "origin": "share-sheet"},
+  "url": "https://example.com/interesting-talk",
+  "shared_text": "https://example.com/interesting-talk"
+}

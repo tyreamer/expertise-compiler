@@ -6,6 +6,24 @@ Built primarily for AI engineers, developers, architects, consultants, agencies,
 
 **One corpus, multiple independent builds, preserved evidence.** [Product north star](NORTH_STAR.md) · [Architecture and current limits](DESIGN.md)
 
+## Keep useful material as you encounter it
+
+You don't have to prepare a corpus in advance. Save a useful link, excerpt or file today; use the accumulated material for a different goal later. Capture feeds reusable expertise rather than ending at a bookmark.
+
+```text
+Encounter something useful → capture → Inbox or collections
+                                           ↓ when useful
+                                process supplied content
+                                           ↓
+                                expertise → map or goal → build → reuse
+```
+
+The first capture adapter is an [iPhone Share Sheet Shortcut proof of concept](docs/iphone-shortcut.md) that writes URL/text records into a synced folder. The desktop imports them into your local project. Saving requires no model call and does not trigger compilation. This is a setup recipe with tested local support, not an installable mobile app; the phone and iCloud flow still needs live testing.
+
+For example, save dinner ideas during the week, then ask for a dinner plan. Save technical talks, then ask for a design review. Personal notes such as “I like only the sauce” or “don't treat this as company policy” remain separate from what the sources actually say. One saved source can belong to several collections; removing one membership preserves the others and earlier builds.
+
+**Saved is not processed.** Receiving an Instagram, YouTube, X or article URL does not provide its contents. V1 stores the link and actually shared data, reports unavailable content, and can normalize supplied text or transcript files later. It does not scrape social platforms, transcribe media or fabricate missing details. [Capture contract and limits](docs/CAPTURE.md).
+
 **You don't need to know what to build.** Give Expertise Compiler content you think is valuable. It examines the knowledge, methods, judgment, procedures, examples and criteria inside, then shows the strongest supported things that material can become.
 
 The current conversational interface is a Codex/Claude Code skill that runs the local compiler. Install that interface, then tell your AI:
@@ -119,6 +137,8 @@ Ordinary skill exports contain selected knowledge and relevant quotations. They 
 Use local Codex or Claude Code with permission to read files and run local tools. A local Python 3.10+ runtime is needed underneath; your assistant checks for it and helps with setup if missing. There are no additional Python packages to install for normal use.
 
 Supply UTF-8 `.txt`, `.md`, `.vtt`, or `.srt` transcripts as accessible attachments or a folder. YouTube fetching is not implemented yet; exported transcripts work now, and original video URLs can be preserved with them.
+
+The optional capture layer can also preserve arbitrary supplied attachment bytes. Preserving an image, PDF or video is not understanding it: their processing adapters are not implemented. Use a downloaded synced intake folder and keep the compiler project local; shared capture source snapshots require filesystem hard-link support (tested on this Windows environment).
 
 Work stays in your local project. Your chosen AI service may still process content remotely and have subscription or usage limits. A plain web chat without local file/tool access cannot run the installed compiler autonomously, though comparison prompts can be used there.
 

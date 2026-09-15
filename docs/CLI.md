@@ -25,6 +25,10 @@ python /path/to/expertise-compiler/scripts/ec.py validate-build BUILD_FOLDER
 
 Use --action save to archive without a goal, --action explore to discover a Capability Map, and --adopt OLD_RUN to copy an existing run. Do not repeat --input on continuation calls. The assistant saves briefs from conversation, handles returned tasks and acknowledges actual review; users do not operate this CLI. [Complete phase contract](../prompts/goal-work.md).
 
+### Capture operations (assistant-operated)
+
+Capture and deferred processing are available through `ec.py capture`. Importing a synced folder does not compile it. See [capture operations and states](CAPTURE.md) for import, Inbox search, annotations, multiple memberships, explicit processing and evidence tracing; the assistant handles these commands for the user.
+
 ### Capability Map operations (assistant-operated)
 
 ```text

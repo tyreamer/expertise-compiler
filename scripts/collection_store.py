@@ -1,5 +1,6 @@
 """Private local collections layered on immutable source snapshots and IR history."""
 from pathlib import Path
+import os
 import shutil
 import tempfile
 import uuid
@@ -94,6 +95,20 @@ class Library:
                 candidate = temp / 'run'
                 if records:
                     ingest(inputs, candidate, temp / 'metadata.json')
+                    if previous:
+                        # Retain shared storage for unchanged sources during legacy additions too.
+                        _,new_docs,_=validate_sources(candidate)
+                        for sid,doc in new_docs.items():
+                            if sid not in docs or docs[sid]!=doc: continue
+                            for relative in (f'sources/{sid}.json',doc['raw_path']):
+                                target=safe_child(candidate,relative)
+                                linked=target.with_name(target.name+'.link')
+                                try:
+                                    os.link(safe_child(previous,relative),linked)
+                                    os.replace(linked,target)
+                                except OSError:
+                                    # Legacy ingestion also supports filesystems without links.
+                                    if linked.exists(): linked.unlink()
                 else:
                     write(candidate / 'corpus.json', {'schema_version':VERSION,'sources':[], 'corpus_id':'corpus-'+fingerprint([])})
                     (candidate / 'units').mkdir()
@@ -142,6 +157,48 @@ class Library:
             write(candidate/'units'/f'{sid}.json',part)
         write(candidate/'source-change.json',{'previous_corpus':validate_sources(previous)[0]['corpus_id'],
               'retained_unit_ids':sorted(valid),'invalidated_unit_ids':sorted(set(original)-set(valid))})
+
+    def attach_shared(self, selector, sources, managed_ids):
+        """Set capture-owned memberships; keep manual sources and all old snapshots.
+
+        Source runs are canonical, already normalized records. Hard links keep the
+        existing self-contained snapshot paths without storing payload copies.
+        """
+        folder,data=self.resolve(selector); previous=self.run(folder,data)
+        old,docs,_=validate_sources(previous)
+        files={sid:(previous,d) for sid,d in docs.items() if sid not in managed_ids}
+        for source in sources:
+            _,shared,_=validate_sources(source)
+            for sid,doc in shared.items():
+                if sid in files: require(files[sid][1]==doc,'Shared source identity collision')
+                files[sid]=(Path(source),doc)
+        entries=[{'source_id':sid,'path':f'sources/{sid}.json','document_hash':fingerprint(doc)}
+                 for sid,(_,doc) in sorted(files.items())]
+        corpus={'schema_version':VERSION,'sources':entries,'corpus_id':'corpus-'+fingerprint(entries)}
+        if corpus==old: return folder,data
+        revision_id='source-'+corpus['corpus_id'].split('-')[1][:24]
+        destination=folder/'sources'/revision_id
+        if not destination.exists():
+            with tempfile.TemporaryDirectory(prefix='.shared-',dir=folder) as temporary:
+                candidate=Path(temporary)/'run'
+                for area in ('sources','raw','units'): (candidate/area).mkdir(parents=True,exist_ok=True)
+                for sid,(origin,doc) in files.items():
+                    for relative in (f'sources/{sid}.json',doc['raw_path']):
+                        try: os.link(safe_child(origin,relative),safe_child(candidate,relative))
+                        except OSError as exc:
+                            raise Invalid('Shared capture sources require local hard-link support on this filesystem; originals are preserved: '+str(exc)) from exc
+                write(candidate/'corpus.json',corpus)
+                self.carry_checkpoints(previous,candidate)
+                validate_sources(candidate)
+                destination.parent.mkdir(parents=True,exist_ok=True);candidate.rename(destination)
+        else: require(validate_sources(destination)[0]==corpus,'Shared source revision collision')
+        if revision_id not in {r['revision_id'] for r in data['revisions']}:
+            data['revisions'].append({'revision_id':revision_id,'corpus_id':corpus['corpus_id'],'run':destination.relative_to(folder).as_posix()})
+        history=data.get('revision_history',[r['revision_id'] for r in data['revisions']])
+        if not history or history[-1]!=revision_id: history.append(revision_id)
+        data['revision_history']=history;data['active_revision']=revision_id
+        self.save(folder,data)
+        return folder,data
 
     def catalog(self):
         return [self.inspect(entry['collection_id']) for entry in self.index['collections']]

@@ -20,6 +20,12 @@ These dimensions can be selected independently. Knowledge does not imply persona
 
 **One corpus can be compiled multiple ways for different goals without re-ingesting or destroying the original expertise representation.**
 
+The corpus can emerge during normal life. A provider-independent capture layer sits before sources and collections: encounter useful material → capture immediately → optional personal context → Inbox or multiple collections → process when useful → durable expertise → Capability Map or goal → build → reuse. A user need not prepare a corpus in advance. Capture exists to feed reusable expertise, not to reposition the product as a bookmarking destination.
+
+Capture records, source content, personal reasons for saving, and compiled methods are distinct records. Saving does not imply retrieval, understanding, agreement, endorsement or policy authority. One canonical source can have several collection memberships. Saving should remain cheap; never repeatedly pay to understand the same available content unnecessarily. Reuse verified representations and perform incremental work when a goal needs it, not on every share.
+
+The first capture interface is an iPhone Shortcut using a synced folder; iCloud is an adapter, not a core dependency. Future share extensions, web clippers, email, Android or API adapters can implement the same contract. No native app, hosted account system or background processing service is required for this proof. Explicit IDs and relationships support future traversal; a graph database is an option only if demonstrated relational complexity justifies it.
+
 Users do not need to invent a goal first. Capability Maps provide a core exploration experience: derive the strongest supported opportunities from saved expertise, explain input → transformation → output and limits, then carry the selected opportunity directly into a build. Maps are versioned interpretations, separate from source truth and regeneratable without changing IR. A known goal bypasses the map; archive-only requests still preserve content without forcing discovery.
 
 Selection creates a build-specific view of expertise, not a destructive filter on the collection. If a new goal needs something not extracted before, revisit archived sources and extend the IR with a new revision. Do not assume the first extraction was exhaustive.
@@ -38,11 +44,15 @@ These are independent builds from shared sources and expertise, not successive c
 ## Compilation model
 
 ```text
+DISCOVER CONTENT DURING NORMAL LIFE
+        ↓
+CAPTURE + OPTIONAL PERSONAL CONTEXT
+        ↓
 SOURCE COLLECTION
         ↓
 DURABLE EXPERTISE IR
         ↓
-USER BUILD INTENT
+CAPABILITY MAP / USER BUILD INTENT
         ↓
 SELECT / EXTEND RELEVANT EXPERTISE
         ↓
@@ -76,6 +86,11 @@ This is an open set of examples, not a backlog commitment to build every exporte
 The following is a conceptual architecture, not a claim that these directories or all modules exist today:
 
 ```text
+capture-layer/
+  immutable captures, optional annotations
+  Inbox, source membership, processing state
+  generic adapter contract
+
 expertise-core/
   sources, collections, expertise IR
   extraction / reconciliation
@@ -87,6 +102,7 @@ targets/
   eval, knowledge-pack, custom, future targets
 
 interfaces/
+  iPhone Shortcut / synced-folder capture adapter
   Codex skill, Claude Code skill, CLI
   future desktop, web, API, MCP
 ```

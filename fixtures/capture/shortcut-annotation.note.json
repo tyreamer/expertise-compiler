@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0",
+  "annotation_id": "annotation-00000000-0000-4000-8000-000000000002",
+  "capture_id": "capture-00000000-0000-4000-8000-000000000001",
+  "annotated_at": "2026-09-15T12:01:00Z",
+  "user_note": "Interesting perspective on permission boundaries; do not treat as company policy.",
+  "add_collections": ["AI Architecture", "Security"]
+}

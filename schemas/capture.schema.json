@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "capture",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "capture_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "captured_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "original_value": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_type": {
+      "enum": [
+        "url",
+        "text",
+        "image",
+        "video",
+        "file",
+        "unknown"
+      ]
+    },
+    "capture_status": {
+      "const": "captured"
+    },
+    "processing_status": {
+      "const": "pending"
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "adapter": {
+          "type": "string",
+          "minLength": 1
+        },
+        "origin": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "adapter",
+        "origin"
+      ],
+      "additionalProperties": false
+    },
+    "shared_text": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "user_note": {
+      "type": "string"
+    },
+    "requested_collections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "filename": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "byte_size": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "path",
+          "filename"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "capture_id",
+    "captured_at",
+    "original_value",
+    "source_type",
+    "capture_status",
+    "processing_status",
+    "provenance"
+  ],
+  "additionalProperties": false
+}

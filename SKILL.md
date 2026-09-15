@@ -1,6 +1,6 @@
 ---
 name: expertise-compiler
-description: Discover what valuable content can become, or turn it into reusable expertise for a known goal. Produce a grounded Capability Map, recommend what to build first, and build a selected opportunity. Save and reuse collections for creation, review, decisions, guided work, learning and reference; handle revisions and optional skill exports conversationally.
+description: Capture valuable links, text and files for later; manage Inbox, notes and collection memberships. Discover what processed content can become with grounded Capability Maps, or apply saved expertise to a known goal. Build selected opportunities and reuse source-backed methods across work, learning and decisions.
 license: MIT
 ---
 
@@ -13,6 +13,8 @@ Give your AI content you trust. If you don't know what to build, discover its st
 Requires local file/command access and Python 3.10+. No model API calls or third-party Python runtime packages. You supply reasoning and operate the scripts. Never ask users to run Python, edit JSON, choose internal IDs or manage stages. Do not claim execution without saved, validated artifacts.
 
 ## Understand the work
+
+For “save this link,” share/capture requests, Inbox management or deferred processing, follow [capture.md](prompts/capture.md) first. Capture means cheap storage, not permission to extract, discover or compile. Personal notes remain separate from sources. If a later goal uses a capture-fed collection, process available pending material when useful and disclose unavailable linked content. The [iPhone Shortcut proof](docs/iphone-shortcut.md) is the first folder-based adapter, not an installed native app.
 
 Infer objective, relevant context, constraints, supplied work, desired result and usefulness criteria from conversation. Briefly reflect your understanding and proceed without unnecessary confirmation. Save a private brief following [goal-work.md](prompts/goal-work.md). User context is not source evidence.
 

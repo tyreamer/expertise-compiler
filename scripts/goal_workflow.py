@@ -1,5 +1,6 @@
 """Goal -> evidence-linked method -> actual saved work, with private collection reuse."""
 from pathlib import Path
+import json
 import shutil
 import tempfile
 from ec import (ROOT, VERSION, Invalid, assemble, digest, fingerprint, inventory, read, require, safe_child,
@@ -147,6 +148,9 @@ def work(*, project='.', input=None, metadata=None, collection=None, name=None, 
         if not (run/'reconciliation.json').exists() or read(run/'reconciliation.json')!=receipt:
             return respond('reconcile',agent_task={'prompt':str(ROOT/'prompts/reconcile.md'),'instruction':'Review cross-source relationships, then continue prepare with --reconciled.'})
         ir=assemble(run)
+        if (library.root/'capture/state').exists():
+            from capture_store import CaptureStore
+            CaptureStore(project).refresh_status()
         return respond('knowledge_saved',summary=library.inspect(data['collection_id']),ir_hash=fingerprint(ir),
                        message='Sources and reviewed knowledge saved; no user goal, result or skill was invented.')
     if action in {'save','add','remove','replace'} and brief is None:
@@ -171,6 +175,12 @@ def work(*, project='.', input=None, metadata=None, collection=None, name=None, 
         return respond('exported', skill=str(destination / 'SKILL.md'), limits='Relevant excerpts included; no full originals, brief or work product. Review before sharing. Nothing was published or installed globally.')
     if brief:
         brief_data = read(path(brief)); validate_schema(brief_data,'brief')
+        if (library.root/'capture/state').exists():
+            from capture_store import CaptureStore
+            capture_context=CaptureStore(project).listing(data['collection_id'])['items']
+            if capture_context:
+                # Bind current personal context to this brief/build, never to source statements.
+                brief_data['context'] += '\n\nSaved capture context (personal annotations, not source evidence):\n'+json.dumps(capture_context,ensure_ascii=False,sort_keys=True)
         require(not brief_data.get('intent') or not target or target==brief_data['intent'], 'Target contradicts saved brief intent')
         brief_id = 'brief-' + fingerprint(brief_data)[:24]
         write(folder / 'briefs' / f'{brief_id}.json', brief_data)
@@ -221,6 +231,9 @@ def work(*, project='.', input=None, metadata=None, collection=None, name=None, 
     if reconciled: write(receipt_path,{'schema_version':VERSION,'checkpoint_hash':checkpoint_hash}); receipt=read(receipt_path)
     if receipt != {'schema_version':VERSION,'checkpoint_hash':checkpoint_hash}: return task('reconcile','reconcile.md')
     ir = assemble(run); ir_hash=fingerprint(ir)
+    if (library.root/'capture/state').exists():
+        from capture_store import CaptureStore
+        CaptureStore(project).refresh_status()
     coverage_path=draft / 'coverage.json'
     if not coverage_path.exists(): return task('assess_coverage',ir=str(run / 'ir.json'),ir_hash=ir_hash,brief_id=brief_id)
     coverage=read(coverage_path); validate_schema(coverage,'coverage-assessment')

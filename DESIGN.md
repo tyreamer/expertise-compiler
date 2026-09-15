@@ -12,8 +12,11 @@ Build intent ultimately needs independent inclusion/exclusion choices: reasoning
 
 | Responsibility | Current implementation | Boundary to preserve |
 | --- | --- | --- |
+| Capture and personal context | scripts/capture_store.py; capture schemas | Saved input and annotations are distinct from source truth |
+| First capture adapter | scripts/capture_write.py; docs/iphone-shortcut.md | Synced-folder transport independent of compiler/provider |
 | Sources, IR, validation | schemas and parts of scripts/ec.py | Provider-neutral source and knowledge records |
 | Collections and revisions | scripts/collection_store.py | Durable private archive independent of builds |
+| Opportunity discovery | scripts/capability_maps.py; discovery prompt | Replaceable, versioned interpretation of IR |
 | Goals and compilation | scripts/goal_workflow.py; extraction/reconciliation prompts | Interpret intent, select expertise and preserve evidence |
 | Current text outcome targets | scripts/outcomes.py | Rendering and goal contracts, not an exhaustive expertise taxonomy |
 | Agent Skills target | scripts/scoped_export.py; rendering in scripts/ec.py | Scoped export consuming core records |
@@ -21,7 +24,7 @@ Build intent ultimately needs independent inclusion/exclusion choices: reasoning
 | Assistant interfaces | SKILL.md, agents/openai.yaml, operator prompts, installer | Gather intent and operate core; no provider dependence in IR |
 | CLI interface | command dispatch in scripts/ec.py | Invoke core operations; do not define the product |
 
-This pass documents boundaries rather than moving modules and risking import/installation compatibility. The installer includes the north-star document so the distributed interface retains the architecture guidance.
+New capture and discovery modules sit alongside the existing compiler without moving its public entry points. The installer includes their contracts, prompts and documentation, including the north-star document, so the distributed interface retains the architecture guidance.
 
 ## Remaining structural coupling
 
@@ -35,7 +38,21 @@ The implementation is useful but not yet a fully separated core package:
 - Build intent has no structured include/exclude contract or correction revision. User instructions can guide reasoning but exclusions are not deterministically enforced, and corrections do not yet propagate through a durable regression loop.
 - Compiler fingerprints include the installed SKILL.md. This conservatively tracks current instruction changes, but eventually core, reasoning-interface and target versions should be recorded separately in build manifests.
 
-These are explicit follow-up constraints, not implemented features or reasons to rebuild the project in this documentation pass. Canonical source and IR schemas currently contain no mandatory provider-specific fields, and existing records remain unchanged.
+These are explicit follow-up constraints, not implemented features or reasons to rebuild the entire project. Canonical source and IR schemas currently contain no mandatory provider-specific fields, and existing records remain unchanged.
+
+## Capture layer before the compiler
+
+The architecture now includes capture → sources/collections → expertise compiler → builds/outcomes. `capture_store.py` owns immutable envelopes, attachment blobs, annotation events and mutable membership/processing state. `capture_write.py` is a reference producer for the generic folder contract. The iPhone Shortcut is a first adapter described in `docs/iphone-shortcut.md`; there is no iCloud API in the core, native application, hosted backend, watcher or retrieval service.
+
+Capture and annotation schemas are independent of source and IR schemas. A capture preserves original shared value, known URL/title/type, attachment references, timestamp and entry provenance. A separate state record tracks import identity, multiple stable collection IDs, normalized source IDs and processing issues. Notes never enter normalized segments. New build briefs snapshot relevant capture context privately; later notes cannot mutate old builds or become source evidence. Trace operations follow cited result units to historical source IDs and then to captures.
+
+Import is idempotent by capture ID and envelope fingerprint. Attachment blobs are content-addressed; different intentional captures may retain separate notes while sharing source content. A repeated ID with different data is an error, not an update. Synced JSON records are commit markers written after attachments. Missing files and early annotation events retry on a later explicit import. Original synced files remain untouched. A local OS writer lock serializes capture CLI mutations and releases on process exit; the project does not merge competing desktop replicas.
+
+Normalized captures live once in a canonical source store. `Library.attach_shared` records memberships as existing-format immutable source snapshots whose raw/document files are hard links to canonical files. Thus current source validators, evidence paths and build formats remain compatible without storing one payload copy per collection. This adapter requires hard-link support within the local project filesystem; it fails clearly rather than silently duplicating content. Existing legacy ingestion remains supported and retains shared links for unchanged sources where possible. It is not a migration of all legacy corpora into a global store. Private snapshots and canonical source files should be treated as immutable; hashes detect tampering.
+
+Explicit processing normalizes only supplied text and eligible transcript attachments. It reuses verified source-local checkpoints from current or historical collection revisions when evidence, IDs and relations remain compatible. Cross-source synthesis still needs reconciliation. Nothing recompiles on import, and no broad dependency-rebuild system is added. Processing statuses distinguish saved data, unavailable linked content, partial work, a saved IR representation and issues. A validated representation is not truth or proof that all expertise was extracted.
+
+Relationships currently use explicit capture IDs, source IDs, collection IDs, annotation IDs and build/IR evidence links. Graph-style traversal can be introduced later if useful; no graph database is needed. Membership removal preserves historical originals; a capture with no remaining named membership returns to Inbox. Capture state remains project-local, and the synced intake is not bidirectional synchronization of compiler state. See [capture contract](docs/CAPTURE.md) for exact storage and failure behavior.
 
 ## Capability Maps: derived opportunity discovery
 

@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "capture-state",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "capture_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "envelope_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "imported_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "collection_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "maxLength": 64
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "source_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^src-[a-f0-9]{24}$"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "attachment_blobs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "blob_hash": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "path",
+          "blob_hash"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "annotation_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "maxLength": 64
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "capture_status": {
+      "const": "captured"
+    },
+    "processing_status": {
+      "enum": [
+        "pending",
+        "awaiting_retrieval",
+        "partially_processed",
+        "processed",
+        "needs_attention"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "capture_id",
+    "envelope_hash",
+    "imported_at",
+    "collection_ids",
+    "source_ids",
+    "attachment_blobs",
+    "annotation_ids",
+    "capture_status",
+    "processing_status",
+    "issues"
+  ],
+  "additionalProperties": false
+}

@@ -6,6 +6,8 @@ We're testing whether that saves effort and improves your work compared with att
 
 ## Before you start
 
+For the capture-first pilot, use the [iPhone Shortcut live test](iphone-shortcut.md#exact-first-live-test-from-your-iphone). It separately measures saving, sync and import before asking for processing. A URL-only capture is expected to remain unavailable for content-based work; that is different from a failed save. The rest of this guide tests discovery and useful outcomes once enough content is actually available.
+
 Use local Codex or Claude Code with access to your project files and local tools. Follow the [installation instructions](../README.md#use-the-current-skill-interface); your assistant should handle setup, including checking Python 3.10+. You should not need to run compiler commands or edit JSON. If you already have an installation, ask the facilitator to verify its version before testing; the installer preserves differing existing installations instead of silently updating them.
 
 Choose one project folder and keep using it throughout the test. Start with a small collection, such as 2–5 transcripts, so you can judge whether the assistant interpreted them correctly. This is a suggested pilot size, not a product limit. Supply UTF-8 `.txt`, `.md`, `.vtt` or `.srt` files. Links and playlists alone won't work yet; neither will raw audio, video, PDFs or slide decks. Ask the facilitator for help preparing text and include that preparation time in your feedback.

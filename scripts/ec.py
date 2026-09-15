@@ -500,6 +500,11 @@ def status(run):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
+    p = sub.add_parser('capture', help='Import and manage cheap captures; process only on request')
+    p.add_argument('--project', default='.'); p.add_argument('--collection')
+    p.add_argument('--action', choices=['import','list','show','add','move','remove','note','process','trace'], default='list')
+    p.add_argument('--inbox'); p.add_argument('--item',dest='items',action='append'); p.add_argument('--to',action='append')
+    p.add_argument('--query');p.add_argument('--since');p.add_argument('--until');p.add_argument('--note');p.add_argument('--build')
     p = sub.add_parser('map', help='Discover, inspect, compare or build from a saved Capability Map')
     p.add_argument('--project', default='.'); p.add_argument('--collection')
     p.add_argument('--action', choices=['discover','list','inspect','compare','select'], default='discover')
@@ -529,7 +534,12 @@ def main():
     p = sub.add_parser('validate-package'); p.add_argument('folder')
     args = parser.parse_args()
     try:
-        if args.command == 'map':
+        if args.command == 'capture':
+            from capture_store import capture_command
+            result = capture_command(project=args.project,action=args.action,inbox=args.inbox,collection=args.collection,
+                                     items=args.items,to=args.to,query=args.query,since=args.since,until=args.until,
+                                     note=args.note,build=args.build)
+        elif args.command == 'map':
             from capability_maps import capability_map
             result = capability_map(project=args.project,collection=args.collection,action=args.action,
                                     draft=args.draft,map_id=args.map_id,before=args.before,select=args.select,
@@ -570,7 +580,8 @@ def main():
             result = {'package': str(package(args.run, args.capability_id, args.output))}
         else:
             validate_package(args.folder); result = {'valid': True}
-        print(json.dumps(result, indent=2, ensure_ascii=False))
+        # JSON escapes preserve shared Unicode text even through legacy Windows pipes.
+        print(json.dumps(result, indent=2, ensure_ascii=True))
     except (Invalid, ValueError, OSError, KeyError) as e:
         print(f'Error: {e}', file=sys.stderr)
         return 1

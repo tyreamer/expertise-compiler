@@ -1,0 +1,37 @@
+[
+  {
+    "collection":"Dinner Ideas",
+    "intent":"plan",
+    "goal":"Create a five-night dinner plan and shopping list from these saved ideas.",
+    "work":"Two adults. Keep the plan practical; reuse a dish if there aren't five supported recipes.",
+    "captures":[
+      {"title":"Chickpea skillet","text":"For two servings, warm one 400 g can of chickpeas with 200 g chopped tomatoes in a pan until hot. Serve with bread.","note":"I like the sauce. Probably wouldn't make the side dish."},
+      {"title":"Quick pasta","text":"For two servings, cook 200 g dry pasta according to its packet. Warm 250 g tomato sauce, then mix with the cooked pasta.","note":"Good for a quick weeknight meal."},
+      {"title":"Lentil salad idea","text":"Mix cooked lentils, cucumber and lemon dressing. This shared idea does not specify quantities or a serving count.","note":"Try this later; amounts still need checking."},
+      {"title":"Dinner Reel","url":"https://www.instagram.com/reel/synthetic-dinner-example/","note":"Looks appealing, but I haven't tried it."}
+    ],
+    "result_sections":[
+      ["steps","Five nights","Monday and Thursday: chickpea skillet. Tuesday and Friday: quick pasta. Wednesday: lentil salad, pending quantities and serving count. Repeat dishes rather than inventing two recipes. The saved Reel is unavailable."],
+      ["steps","Shopping list","For the two skillet nights: two 400 g cans chickpeas and 400 g chopped tomatoes. For the two pasta nights: 400 g dry pasta and 500 g tomato sauce. Lentils, cucumber and lemon dressing: quantities unknown. Bread is optional user context, not a change to the source recipe."]
+    ],
+    "limitations":["Only two supplied ideas have serving counts and key quantities.","The five-night plan remains provisional until the lentil salad quantities are confirmed."],
+    "unsupported":["The Instagram Reel's contents have not been retrieved.","Lentil salad quantities and serving count are unknown."]
+  },
+  {
+    "collection":"AI Architecture",
+    "intent":"review",
+    "goal":"Review this agent architecture using the saved technical material.",
+    "work":"Every agent shares a long-lived credential. Tools accept any request if a credential is present. Revocation has no test.",
+    "captures":[
+      {"title":"Permission boundaries","text":"For each tool call, identify principal, action and resource. Check whether that principal is allowed to perform that action on that resource; a credential's presence alone is not authorization.","note":"Important perspective on permission boundaries, but do not treat this as company policy."},
+      {"title":"Revocation exercise","text":"Test expiry and revocation independently. For example, revoke a test credential and verify that its next protected operation is denied.","note":"Useful exercise for our architecture review."},
+      {"title":"Agent talk","url":"https://www.youtube.com/watch?v=synthetic-example","note":"Watch before treating the advice as authoritative."}
+    ],
+    "result_sections":[
+      ["assessment","Scoped review","The design does not distinguish principal, action and resource. Credential presence alone does not satisfy the supplied method. The sources do not establish company policy."],
+      ["revision","Suggested changes","Define authorization for each principal/action/resource combination. Add separate expiry and revocation tests, including a protected call after test-credential revocation."]
+    ],
+    "limitations":["The notes guide a scoped review; this is not a complete security assessment or company policy."],
+    "unsupported":["The linked agent talk has not been retrieved."]
+  }
+]
