@@ -1,0 +1,2 @@
+Write the smallest input that reproduces the failure and record expected and actual output.
+Change one suspected cause at a time and revert ineffective changes.

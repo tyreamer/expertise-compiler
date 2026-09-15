@@ -69,6 +69,18 @@
       },
       "minItems": 0,
       "uniqueItems": true
+    },
+    "archived": {
+      "type": "boolean"
+    },
+    "revision_history": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+        "maxLength": 64
+      },
+      "minItems": 1
     }
   },
   "required": [

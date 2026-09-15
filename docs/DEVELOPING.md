@@ -32,6 +32,7 @@ For Codex's bundled GitHub installer, use repository `tyreamer/expertise-compile
 - `scripts/workflow.py`: saved project state and deterministic orchestration; returns agent tasks at semantic boundaries.
 - `scripts/goal_workflow.py`, `scripts/collection_store.py`: goal briefs, named archives, coverage reassessment, saved reviews/checklists and immutable build validation.
 - `scripts/scoped_export.py`: selected method/evidence export, with full originals retained privately.
+- `scripts/outcomes.py`: the eight domain-independent intent contracts and general result rendering. Natural-language inference belongs to the host assistant and is documented in prompts/intents.md.
 - `scripts/ec.py`: preserved ingestion, normalization, IR assembly, integrity checks, and portable export.
 - `scripts/ingestors/`: transcript file adapter and an explicit unavailable YouTube boundary. Adapters produce original bytes/metadata, not knowledge units.
 - `prompts/`: detailed reasoning and operator instructions, loaded as needed.
@@ -41,6 +42,8 @@ For Codex's bundled GitHub installer, use repository `tyreamer/expertise-compile
 Project state lives in `.expertise-compiler/`, outside the installed skill. Add that directory to the consuming project's ignore rules before publishing its project; the compiler does not silently modify unrelated Git settings. This repository already ignores it.
 
 `tests/test_goals.py` covers goal/no-goal/archive paths, actual saved synthetic reviews in two domains, fresh-process collection reuse, checklist output, another source pass, additive source dependencies, private export boundaries, adoption, tampering, installation and fair evaluation context. It replays authored semantic data at the assistant boundary; it is not a live assistant effectiveness test.
+
+`tests/test_universal.py` uses six unrelated synthetic corpora under fixtures/universal and all eight intents through the same coordinator. It verifies useful section contracts, explicit intent/reason persistence, no automatic skill package, fresh-process reuse, targeted extraction, source replacement/removal (including an empty active collection), relationship invalidation, source/knowledge comparisons, archive/restore, prepare-only knowledge and historical validation. The fixture intent labels and prose are authored expectations, not a simulated model-inference success. The live protocol tests that separate boundary.
 
 ## Validation limits
 

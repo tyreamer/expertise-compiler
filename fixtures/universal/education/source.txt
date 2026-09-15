@@ -1,0 +1,2 @@
+Ask learners to retrieve an idea before showing its explanation.
+Use their error to choose the next example instead of repeating the same explanation.

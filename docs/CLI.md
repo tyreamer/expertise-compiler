@@ -11,12 +11,23 @@ python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "
 python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research" --reviewed
 python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research" --brief NEW_BRIEF --target checklist
 python /path/to/expertise-compiler/scripts/ec.py work --project . --input ./more --collection "Product Research" --action add
+python /path/to/expertise-compiler/scripts/ec.py work --project . --input ./input --name "Leadership" --action prepare
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Leadership" --action inspect
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Leadership" --action remove --remove lesson.txt
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Leadership" --action replace --input ./updated
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Leadership" --action compare
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Leadership" --action archive
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Leadership" --action restore
 python /path/to/expertise-compiler/scripts/ec.py work --project . --action list
 python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research" --action export
 python /path/to/expertise-compiler/scripts/ec.py validate-build BUILD_FOLDER
 ```
 
 Use --action save to archive without a goal, --action explore for optional discovery, and --adopt OLD_RUN to copy an existing run. Do not repeat --input on continuation calls. The assistant saves briefs from conversation, handles returned tasks and acknowledges actual review; users do not operate this CLI. [Complete phase contract](../prompts/goal-work.md).
+
+New briefs record lowercase intent (create/review/improve/decide/plan/do/learn/reference) and intent_reason; target is inferred from that saved field. --target checklist is retained for legacy briefs only. New typed results use outcome schema 1.1 and save a readable method, not an automatic skill package. --action prepare extracts and reconciles knowledge without a goal, result or skill. --action save only preserves sources.
+
+Compare explicit source revisions with --before/--after; compare historical knowledge in those snapshots with --before-knowledge/--after-knowledge hashes. The assistant resolves these from manifests; users need not know them. Removing a source retains historical originals. Replacing same-named input changes the active source; adding a different version retains both. Archived collections remain listable and can be restored or explicitly used by name.
 
 ## Legacy capability coordinator
 

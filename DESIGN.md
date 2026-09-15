@@ -1,8 +1,20 @@
 # Design: compile expertise, preserve evidence
 
+## Universal goal compilation
+
+The architecture separates collection, durable IR, user brief, compiled method, result and optional exported asset. A collection can support CREATE, REVIEW, IMPROVE, DECIDE, PLAN, DO, LEARN and REFERENCE. These are internal outcome contracts, not product niches or a user menu. The host assistant interprets natural language and records intent plus reasoning in the brief. Python validates and routes this decision; it has no domain classifier or domain-specific branches.
+
+New outcomes use schema version 1.1. Typed sections carry useful work and epistemic labels. Source-derived sections cite selected units; original creations and user context remain separate. Minimal intent contracts require, for example, options plus recommendation for DECIDE or lesson plus exercise for LEARN. These checks detect missing structure, not meaningful analysis or learner mastery. The assistant supplies and reviews semantics.
+
+Legacy 1.0 review/checklist results retain their schemas, rendering and package validation. New intent-bearing briefs produce outcome builds with a readable method and relevant evidence; a skill package is generated only on explicit export. The method retains the existing evidence-linked capability structure. Compiler fingerprints include root SKILL.md, scripts, prompts and schemas.
+
+Collections support preparation without a goal, summaries, addition/replacement/removal, history comparison, archive/restore and reuse. Removing the final active source creates an empty source revision and preserves history. Missing evidence invalidates knowledge and its transitive relationships; valid partial knowledge is retained for a targeted pass. Earlier builds validate against their historical IR and originals. Explicit knowledge hashes permit comparisons within a source revision.
+
+Archive is a reversible lifecycle flag, not deletion. Explicit named use restores an archived collection. “Just save for later” preserves originals; “Save these as NAME” can prepare knowledge without inventing a goal, result or skill. Later goals in the same project do not need source re-upload. This iteration adds no accounts, hosted storage, networking, model APIs, agent teams or ingestion integrations.
+
 ## Conversational product boundary
 
-The installed skill is the product surface. Users supply sources and explain what they want to accomplish. The assistant saves a brief, applies relevant methods to actual text work and returns a review/improvement or checklist. Exploration and archiving are valid alternatives. Internal phase results are tasks for the agent, never a user checklist.
+The installed skill is the product surface. Users supply sources and explain what they want to accomplish. The assistant saves a brief, applies relevant methods and returns the useful outcome for that goal. Exploration and archiving are valid alternatives. Internal phase results are tasks for the agent, never a user checklist.
 
 `goal_workflow.py` layers named collections and saved work over the original compiler. `collection_store.py` preserves additive source revisions and can copy an existing run without changing it. A brief stores the user's context separately from evidence. Each goal explicitly assesses extraction sufficiency; targeted source passes can extend knowledge. Builds bind source/IR revisions, brief, method, result, target and compiler fingerprint. Earlier builds remain reproducible after updates. Deterministic validation runs before a staged build becomes complete.
 
@@ -27,7 +39,7 @@ Python owns parsing, canonical serialization, hashing, cross-reference checks, a
 
 Source IDs bind relative filename and raw byte hash. Identical text from different filenames remains separate evidence; repeated content is not silently deduplicated. A corpus ID binds ordered source IDs and canonical document hashes, including metadata. IR hashes bind knowledge and coverage. Capabilities bind an IR hash. Package manifests bind every exported file except the manifest itself.
 
-Schemas are versioned at `1.0`; incompatible versions fail closed. There is no automatic migration yet. Arrays have deterministic order when assembled; canonical hashes use UTF-8 sorted-key JSON, while disk JSON is readable and indented. Source segment IDs are stable within an unchanged source snapshot. Editing a source creates a new identity rather than disguising changed evidence under an old ID.
+Sources and IR retain schema version `1.0`; new general outcomes use `1.1` and older builds remain readable. Incompatible versions fail closed. Arrays have deterministic order when assembled; canonical hashes use UTF-8 sorted-key JSON, while disk JSON is readable and indented. Source segment IDs are stable within an unchanged source snapshot. Editing a source creates a new identity rather than disguising changed evidence under an old ID.
 
 Input snapshots and exports are staged and published only after validation. Source-level checkpoints enable resume without redoing complete sources. Assembly saves IR revisions and replaces the current IR atomically. Two writers should not edit the same run concurrently; distributed locking and merge resolution are outside the MVP.
 

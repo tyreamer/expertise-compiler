@@ -1,12 +1,12 @@
 ---
 name: expertise-compiler
-description: Apply transcript methods to actual work and save reusable source collections. Use for reviewing or improving a draft, proposal or plan using supplied sources; archiving transcripts; reusing or updating a collection; creating a practical checklist; or exporting the method as an agent skill. Also supports capability exploration and comparison with transcript chat.
+description: Turn supplied content into reusable expertise for the user's goal. Save and reuse named collections; create, review, improve, decide, plan, perform guided work, learn, or answer questions using source-backed methods. Also handles collection updates, revision comparisons, archive/restore and optional skill exports. The assistant operates the workflow conversationally across domains.
 license: MIT
 ---
 
 # Expertise Compiler
 
-Give the user useful work now and preserve the source-backed method for reuse. When a goal is supplied, finish it; do not stop at a menu of capabilities.
+Give your AI content you trust, tell it what you want to accomplish, and turn that material into reusable expertise that helps you do the work. When a goal is supplied, finish the useful outcome; do not stop at a menu of capabilities. No domain-specific routing or creator persona is the product.
 
 Requires local file/command access and Python 3.10+. No model API calls or third-party Python runtime packages. You supply reasoning and operate the scripts. Never ask users to run Python, edit JSON, choose internal IDs or manage stages. Do not claim execution without saved, validated artifacts.
 
@@ -14,9 +14,9 @@ Requires local file/command access and Python 3.10+. No model API calls or third
 
 Infer objective, relevant context, constraints, supplied work, desired result and usefulness criteria from conversation. Briefly reflect your understanding and proceed without unnecessary confirmation. Save a private brief following [goal-work.md](prompts/goal-work.md). User context is not source evidence.
 
-If content arrives without a goal, ask once: “What are you hoping this helps you do? You can describe a task, share something you’re working on, or ask me to explore the material.” Ask only for information that materially affects the work. “Save for later” needs no goal question. “Explore what’s useful” may end with a few supported possibilities, without forcing a method.
+If content arrives without a goal or archive instruction, ask once: “What are you hoping this material helps you do?” Ask only for information that materially affects the work. “Just save for later” archives without extraction. “Save these as Leadership” prepares a collection and broadly useful knowledge without forcing a result or skill. “Explore what's useful” can end with supported possibilities.
 
-Default to review/improvement for text work; use plan/checklist when requested. Preserve the original draft and save proposed changes separately. Do not overwrite user files or add deliverables beyond authorization.
+Infer the internal intent from meaning and context: CREATE, REVIEW, IMPROVE, DECIDE, PLAN, DO, LEARN or REFERENCE. Persist the lowercase intent and a short reason in the brief. See [intent guidance](prompts/intents.md); these labels are not a user menu. Do not force an absent draft into CREATE or a review-shaped result into LEARN. Preserve supplied work and save changes separately. Keep user context distinct from source evidence.
 
 ## Operate the workflow
 
@@ -27,11 +27,16 @@ Preserve accessible transcript attachments as bytes in a local input folder. For
 Use `ec.py work` and follow [goal-work.md](prompts/goal-work.md) until the requested outcome is complete. Returned agent tasks are actions for you, not instructions to hand to the user. Repair routine schema/evidence mistakes and save checkpoints promptly. Reopen named collections from the on-disk library in fresh sessions.
 
 - “Use these sources to improve this proposal”: save the brief, extract and reconcile methods, apply them, review the result and validate the saved work.
+- “Use my Leadership collection to review this message”: resolve the saved collection without asking for its sources again.
+- “Use this collection to help me decide between these options”: compare real alternatives with criteria, tradeoffs and a conditional recommendation.
+- “Teach me this material”: teach at the user's level, give an exercise and assess their response when it arrives; never claim mastery from a saved lesson.
 - “Save this collection for later”: archive with a readable name and stop; no forced extraction or skill.
 - “Apply the same approach to this new draft”: save a new brief, reuse sufficient knowledge and adapt the method only as needed.
 - “Use the archived material to make a checklist instead”: save the new goal/target and assess extraction sufficiency before reuse.
 - “Add these sources and show me what changes”: create an additive revision, preserve earlier builds, reconsider the active goal and report changed findings, new support and remaining gaps.
 - “Turn what we used into a reusable agent skill”: export the scoped method locally. Publishing or global installation needs the user's request.
+
+“What collections do I have?” lists saved collections including archived status. “What changed?” compares revisions. “Remove this source” removes it from a new active revision while preserving history. “Replace this source” updates it rather than retaining both active copies. “Archive Leadership” marks it archived without deleting anything; restoring or explicitly using that named collection makes it active again. Ordinary answers use readable names, not internal IDs. See [collection operations](prompts/goal-work.md).
 
 Legacy `ec.py compile` remains available for prior numbered selections and explicit multi-capability requests; see [operate.md](prompts/operate.md). Adopt old runs through `work --adopt`, preserving the old path. For actual supplied work prefer the goal workflow.
 
@@ -41,7 +46,7 @@ Read [extract](prompts/extract.md), [reconcile](prompts/reconcile.md) and [goal-
 
 Review the result against the brief and source meaning before acknowledging semantic review. Separate additional general advice from source-derived findings. Explain unsupported judgments; do not manufacture a method to fill a format.
 
-Only announce completion after `validate-build` passes. Lead with assessment and concrete improvements, then link to the real result and reusable method. Mention material gaps. Distinguish structural integrity, evidence linkage, assistant semantic review and independent effectiveness testing. Keep hashes, stages and IDs out of ordinary responses.
+Only announce a completed result after `validate-build` passes. Lead with the requested outcome and link to its saved result; optionally mention the saved method. New general outcomes do not create a skill package until export is requested. For archive-only or knowledge preparation, describe exactly what was saved, never imply a result exists. A saved guided procedure is not proof the user executed it. Distinguish structural integrity, evidence linkage, assistant semantic review and effectiveness testing.
 
 Full originals and user drafts stay in private collections. Scoped methods contain relevant quotations, which may still need permission to share. No automatic publishing, global installation or remote transmission through tools.
 

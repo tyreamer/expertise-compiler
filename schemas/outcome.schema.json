@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "outcome",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "brief_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "ir_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "method_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target": {
+      "enum": [
+        "create",
+        "review",
+        "improve",
+        "decide",
+        "plan",
+        "do",
+        "learn",
+        "reference"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "deliverable",
+              "assessment",
+              "revision",
+              "options",
+              "recommendation",
+              "steps",
+              "lesson",
+              "exercise",
+              "feedback",
+              "answer"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unit_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+              "maxLength": 64
+            },
+            "minItems": 0,
+            "uniqueItems": true
+          },
+          "status": {
+            "enum": [
+              "explicit",
+              "inferred",
+              "synthesized",
+              "original",
+              "user_context"
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "title",
+          "content",
+          "unit_ids",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "disagreements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "unsupported": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "additional_general_advice": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "brief_id",
+    "ir_hash",
+    "method_hash",
+    "target",
+    "summary",
+    "sections",
+    "disagreements",
+    "limitations",
+    "unsupported",
+    "additional_general_advice"
+  ],
+  "additionalProperties": false
+}

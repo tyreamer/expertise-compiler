@@ -78,6 +78,21 @@ schemas['goal-build'] = obj(schema_version=V, build_id=ID, collection_id=ID, sou
                             method_hash=HASH, result_hash=HASH, target={'enum':['review','checklist']},
                             compiler_hash=HASH, files={'type':'object'})
 
+# Additive contracts keep all existing 1.0 briefs and builds readable.
+INTENTS = ['create','review','improve','decide','plan','do','learn','reference']
+schemas['corpus']['properties']['sources']['minItems'] = 0
+schemas['brief']['properties']['intent'] = {'enum':INTENTS}
+schemas['brief']['properties']['intent_reason'] = S
+schemas['collection']['properties']['archived'] = {'type':'boolean'}
+schemas['collection']['properties']['revision_history'] = {'type':'array','items':ID,'minItems':1}
+schemas['goal-build']['properties']['target'] = {'enum':INTENTS+['checklist']}
+schemas['goal-build']['properties']['result_format'] = {'const':'outcome-1'}
+schemas['outcome'] = obj(schema_version={'const':'1.1'}, brief_id=ID, ir_hash=HASH, method_hash=HASH,
+    target={'enum':INTENTS}, summary=S,
+    sections=arr(obj(kind={'enum':['deliverable','assessment','revision','options','recommendation','steps','lesson','exercise','feedback','answer']},
+                     title=S, content=S, unit_ids=arr(ID), status={'enum':['explicit','inferred','synthesized','original','user_context']})),
+    disagreements=arr(S), limitations=arr(S), unsupported=arr(S), additional_general_advice=arr(S))
+
 if __name__ == '__main__':
     for name, schema in schemas.items():
         write(Path(__file__).resolve().parent.parent / 'schemas' / f'{name}.schema.json',

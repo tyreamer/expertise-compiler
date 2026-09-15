@@ -1,5 +1,7 @@
 # Conversational acceptance protocol
 
+Start with the [universal cross-domain flow](UNIVERSAL-ACCEPTANCE.md) for the current eight-intent workflow. The cases below retain coverage of legacy review and explicit discovery paths.
+
 These are behavioral acceptance cases, not claims of live model performance. Automated tests replay deterministic state transitions with explicitly authored semantic checkpoints; a real assistant still needs to interpret and perform the reasoning tasks.
 
 Install a clean copy into a temporary skill location, open a separate project with the fixture inputs, and confirm natural-language discovery. In a real Codex/Claude Code session, do not instruct the assistant to read SKILL.md or expose internal commands. Record whether it activates, performs the complete loop, and produces a useful answer. Run the same flow in both clients when available; shell-only tests cannot certify a client's natural-language skill matching.

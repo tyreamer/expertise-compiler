@@ -52,6 +52,22 @@
       },
       "minItems": 1,
       "uniqueItems": true
+    },
+    "intent": {
+      "enum": [
+        "create",
+        "review",
+        "improve",
+        "decide",
+        "plan",
+        "do",
+        "learn",
+        "reference"
+      ]
+    },
+    "intent_reason": {
+      "type": "string",
+      "minLength": 1
     }
   },
   "required": [

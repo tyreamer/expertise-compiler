@@ -1,28 +1,31 @@
 # Expertise Compiler
 
-**Give your AI source material and tell it what you're trying to accomplish.** It applies relevant methods to your actual work, saves the sources and reasoning, and lets you use the same collection for different goals later.
+**Give your AI content you trust and tell it what you're trying to accomplish.** Expertise Compiler turns that material into reusable expertise that helps you actually do the work. Save a collection once, then use it for new goals without re-uploading the sources.
 
 Install it once as a skill, then tell your AI:
 
-> Use these sources to improve this proposal. It's for a small business with a limited budget. Identify missing requirements and propose concrete changes. Save the sources as Product Research.
+> Save these as Leadership. Use them to review this message before I send it to my team.
 
 Or point it at a folder:
 
 > Use the transcripts in ./input to review my plan in ./plan.md. Preserve my original and save an improved version with the reasons for your changes.
 
-Your assistant saves the goal, applies the supported methods, and returns an assessment, prioritized findings, concrete changes, and links to the saved result and reusable method. You do not choose compiler stages or fill out forms. If you supply only sources, it asks what you hope to accomplish; **“save for later”** and **“explore what's useful”** are valid answers.
+Your assistant infers the goal, applies supported methods and produces the useful result: a draft, review, decision analysis, plan, guided procedure, lesson or source-backed answer. You do not choose compiler stages or fill out forms. If you supply content without a goal or archive instruction, it asks what you hope to accomplish. **“Just save for later”** and **“explore what's useful”** are valid paths.
 
 ## Why this exists
 
 Transcripts are information. Expertise Compiler turns their methods, procedures, examples, disagreements, and limitations into capabilities you can use again.
 
-The most valuable output is work you can act on: a reviewed proposal, improved plan, or practical checklist. Underneath it is a reusable method with traceable evidence, clear limits and preserved disagreements. Source statements stay distinct from AI inference and your private context. The archive can support tomorrow's different goal without starting from scratch.
+The most valuable output is work you can act on. A collection about a subject can support writing, critique, decisions, guided work or learning when its sources provide sufficient methods. Underneath the result is a reusable method with traceable evidence, clear limits and preserved disagreements. Source statements stay distinct from AI inference and private context. The archive can support tomorrow's different goal without starting from scratch.
 
 ```text
-Named source collection → durable, evidence-linked knowledge
-                                      + your goal and work
-                                      ↓
-                         useful result + reusable method
+Source collection → durable expertise IR → goal and context
+                                             ↓
+                                      compiled method
+                                             ↓
+                                         user result
+                                             ↓
+                                   optional reusable asset
 ```
 
 **No model API key. No hosted compiler service. Your existing AI does the reasoning.** The underlying knowledge remains yours to inspect and reuse beyond a single skill.
@@ -51,6 +54,12 @@ The assistant handles downloading and copying; you do not need to clone the repo
 
 | Say this | What happens |
 | --- | --- |
+| “Save these as Leadership.” | Saves sources and prepares reusable knowledge without forcing a skill. |
+| “Use my Leadership collection to review this message.” | Applies relevant criteria to the actual message and saves feedback. |
+| “Use this collection to help me decide between these options.” | Compares options and gives a conditional recommendation. |
+| “Teach me this material.” | Creates a lesson and exercise, then can assess your response. |
+| “Turn this into a checklist for my situation.” | Applies source procedures to your context with actionable steps. |
+| “Use the same collection for a different goal.” | Reuses sufficient knowledge or extends extraction from the archive. |
 | “Use these sources to improve this proposal.” | Reviews the actual proposal and saves concrete changes with evidence and limits. |
 | “Save these as Product Research for later.” | Archives originals and metadata without forcing a skill or goal. |
 | “Apply the same approach to this new draft.” | Saves a new brief and result using relevant existing knowledge. |
@@ -68,6 +77,10 @@ The task is completed in the same workflow. A source-specific method remains ava
 
 Your project's `.expertise-compiler/library.json` maps readable collection names to stable IDs. Collections preserve original files, source metadata, normalized segments, extraction notes, knowledge revisions, private briefs and immutable completed builds. Each result is bound to its sources, knowledge, brief, method, output target and compiler fingerprint. Interrupted work resumes from saved checkpoints. Existing runs can be adopted without modifying their original folders.
 
+Ask **“What collections do I have?”**, **“What's in Leadership?”**, or **“What changed after adding these sources?”** You can add, replace or remove sources, compare revisions, archive collections and restore them later. Removal changes the active revision; historical sources and results remain available. A new goal, source revision or knowledge revision produces a new build when its content changes. Opening the same project in a new session gives the assistant access to its saved collections; collections are not automatically available in unrelated projects or globally installed.
+
+The collection is not a skill, the skill is not the IR, and the result is not the method. New results save a readable method and relevant evidence underneath. No skill package is created until you ask to export it. “Just save for later” stores originals without claiming knowledge extraction; “Save these as Leadership” also prepares knowledge, and the assistant reports exactly what completed.
+
 Ordinary skill exports contain selected knowledge and relevant quotations. They exclude full raw transcripts, unrelated source documents and private briefs/work products. The full audit material stays in the collection. Exporting locally does not publish or globally install anything, and citations do not establish permission to share. Ask your assistant explicitly when you want to export or install a method.
 
 ## What you need
@@ -84,8 +97,10 @@ The goal is better repeated work than attaching transcripts and asking questions
 
 Ask for a comparison with the same sources, goal, constraints and access to persistent context. Measure quality, corrections, setup, reuse and update effort. Comparable quality with substantially less repeated effort can be valuable. No live effectiveness result is claimed. Passing package validation proves integrity and evidence linkage, not sound judgment or superiority. [How comparisons work](docs/EVALUATION.md).
 
-MIT licensed. Synthetic examples cover gardening, photography, and debugging. Imported source material retains its ownership and licensing.
+MIT licensed. Synthetic acceptance fixtures cover comedy, photography, business, debugging, architecture and education, using the same compiler logic. Earlier gardening fixtures remain. Imported source material retains its ownership and licensing. No broad live assistant effectiveness result is claimed.
 
 ## For contributors
 
 [Development and tests](docs/DEVELOPING.md) · [Internal command reference](docs/CLI.md) · [Architecture](DESIGN.md) · [Conversational acceptance flows](docs/ASSISTANT-FLOWS.md)
+
+[First live cross-domain test](docs/UNIVERSAL-ACCEPTANCE.md)

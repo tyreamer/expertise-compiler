@@ -38,13 +38,23 @@ def validate_suite(tasks, rubric):
 def prepare_comparison(run, package, output, tasks_path, rubric_path, context_path=None):
     run, package, output = Path(run), Path(package), Path(output)
     ir = validate_ir(run)
-    manifest = validate_package(package)
+    candidate=read(package/'manifest.json')
+    general=candidate.get('result_format')=='outcome-1'
+    if general:
+        from goal_workflow import validate_build
+        validate_build(package)
+        manifest=candidate
+        cap=read(package/'method.json')['capability']
+        context_path=context_path or package/'brief.json'
+    else:
+        manifest = validate_package(package)
+        cap=read(package/'capability.json')
     require(manifest['ir_hash'] == fingerprint(ir), 'Evaluation package belongs to a different IR')
     _, docs, _ = validate_sources(run)
     tasks, rubric = read(tasks_path), read(rubric_path)
     validate_suite(tasks, rubric)
     # Reject literal training-example reuse. Semantic leakage still needs review.
-    examples = read(package / 'examples/examples.json')
+    examples = cap['examples']
     for task in tasks:
         require(all(task['task'].strip() != e['input'].strip() for e in examples), 'Held-out task repeats a package training example')
     context = read(context_path) if context_path else {'objective':'Complete the held-out tasks faithfully and usefully.', 'context':'No additional user context supplied.'}
@@ -54,17 +64,17 @@ Use the decision fields and allowed values in each task. Include citations for s
 '''
     common += '\nSHARED USER GOAL AND CONTEXT\n' + json.dumps(context, indent=2) + '\n'
     raw = '\n\n'.join(f'FILE: {d["filename"]}\n' + (run / d['raw_path']).read_text(encoding='utf-8-sig') for d in docs.values())
-    receipt = {'schema_version': '1.0', 'ir_hash': fingerprint(ir), 'capability_hash': fingerprint(read(package / 'capability.json')),
+    receipt = {'schema_version': '1.0', 'ir_hash': fingerprint(ir), 'capability_hash': fingerprint(cap),
                'tasks_hash': fingerprint(tasks), 'rubric_hash': fingerprint(rubric), 'context_hash':fingerprint(context),
-               'selected_unit_ids': read(package / 'capability.json')['unit_ids']}
+               'selected_unit_ids': cap['unit_ids']}
     if (output / 'evaluation.json').exists():
         require(read(output / 'evaluation.json') == receipt, 'Evaluation inputs changed; use a new comparison folder')
     text_write(output / 'baseline-prompt.md', common + '\nRAW TRANSCRIPTS\n' + raw + '\nTASKS\n' + json.dumps(tasks, indent=2))
     compiled = 'This is a self-contained pasted export. The inline KNOWLEDGE and SOURCE ID TO FILENAME sections supply the linked knowledge/evidence records and source identity. WORKED EXAMPLES supplies the example file. Local scripts and other links are unavailable in this session; apply the method using the inline evidence.\n\n'
-    compiled += (package / 'SKILL.md').read_text(encoding='utf-8')
+    compiled += (package / ('method.md' if general else 'SKILL.md')).read_text(encoding='utf-8')
     compiled += '\nKNOWLEDGE\n' + (package / 'references' / 'knowledge.json').read_text(encoding='utf-8')
     compiled += '\nSOURCE ID TO FILENAME\n' + json.dumps({sid: d['filename'] for sid, d in docs.items()})
-    compiled += '\nWORKED EXAMPLES\n' + (package / 'examples' / 'examples.json').read_text(encoding='utf-8')
+    compiled += '\nWORKED EXAMPLES\n' + json.dumps(examples,indent=2)
     text_write(output / 'compiled-prompt.md', common + '\nRAW TRANSCRIPTS\n' + raw + '\nCAPABILITY\n' + compiled + '\nTASKS\n' + json.dumps(tasks, indent=2))
     write(output / 'response-template.json', [{'case_id': t['case_id'], 'answer': '', 'decisions': {k: '' for k in t['decision_fields']}, 'citations': []} for t in tasks])
     write(output / 'tasks.json', tasks)

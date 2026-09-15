@@ -1,0 +1,160 @@
+[
+  {
+    "domain": "comedy",
+    "intent": "create",
+    "request": "Use these notes to write a short scene about a queue that never moves.",
+    "reason": "The user requests new fictional work, not critique of an existing draft.",
+    "source": [
+      "Give a character a simple practical goal and a rule that frustrates it.",
+      "A reasonable objection should force the character to change tactics rather than introduce unrelated absurdity."
+    ],
+    "sections": [
+      [
+        "deliverable",
+        "Queue scene",
+        "CLERK: To reduce waiting, we are measuring how long everyone waits.\nVISITOR: Can you serve someone while you do that?\nCLERK: That would change the sample.",
+        "original"
+      ]
+    ]
+  },
+  {
+    "domain": "photography",
+    "intent": "review",
+    "request": "Use these lessons to critique my portrait: the wall is sharp but the subject is soft.",
+    "reason": "The user supplies an existing photograph description and asks for assessment.",
+    "source": [
+      "If the background is sharp and the subject is soft, inspect the focus plane before blaming camera shake.",
+      "After changing focus, take a comparison frame with other settings held constant."
+    ],
+    "work": "The wall is sharp but the subject is soft. I plan to increase shutter speed.",
+    "sections": [
+      [
+        "assessment",
+        "Focus assessment",
+        "The sharp wall suggests checking the focus plane first. A shutter change alone has not been justified. Take a new frame focused on the subject while keeping other settings unchanged.",
+        "inferred"
+      ]
+    ]
+  },
+  {
+    "domain": "business",
+    "intent": "decide",
+    "request": "Use these lessons to help me choose between a popular market and a smaller market where customers have committed to trials.",
+    "reason": "The user is choosing between alternatives using evidence and constraints.",
+    "source": [
+      "For this exercise, prioritize observed customer commitments over general enthusiasm.",
+      "Compare options using the same evidence threshold and state what would reverse the choice."
+    ],
+    "sections": [
+      [
+        "options",
+        "Options",
+        "The popular market has enthusiasm; the smaller market has trial commitments. Compare those commitments on the same terms before treating them as equivalent.",
+        "inferred"
+      ],
+      [
+        "recommendation",
+        "Conditional choice",
+        "Prioritize testing the smaller market while verifying that trial commitments are real. Reverse this recommendation if those commitments disappear or the other market provides stronger comparable evidence.",
+        "inferred"
+      ]
+    ]
+  },
+  {
+    "domain": "debugging",
+    "intent": "do",
+    "request": "Walk me through investigating an import that drops a row.",
+    "reason": "The user wants guided execution, beginning with a concrete next step.",
+    "source": [
+      "Write the smallest input that reproduces the failure and record expected and actual output.",
+      "Change one suspected cause at a time and revert ineffective changes."
+    ],
+    "sections": [
+      [
+        "steps",
+        "First guided step",
+        "Create a two-row example and run the importer. Record expected and actual row counts and the exact lost row. Stop if it does not reproduce; reduce the original failing input instead. Share those results before choosing a code change. No experiment has been executed yet.",
+        "inferred"
+      ]
+    ]
+  },
+  {
+    "domain": "architecture",
+    "intent": "plan",
+    "request": "Use these sessions to plan identity checks for our internal service.",
+    "reason": "The user requests an ordered design plan with validation checkpoints.",
+    "source": [
+      "Define which principal is acting and which resource and action need authorization before selecting a credential format.",
+      "Test expired credentials and revoked access as separate failure cases."
+    ],
+    "sections": [
+      [
+        "steps",
+        "Identity design plan",
+        "1. List principals, resources and actions; complete when each operation has an owner and permission rule.\n2. Choose credentials against those requirements and document expiry.\n3. Test expiry and revocation separately; complete when each denied request is recorded and access cannot continue through a stale credential.",
+        "inferred"
+      ]
+    ]
+  },
+  {
+    "domain": "education",
+    "intent": "learn",
+    "request": "Teach me how to study this material, then test me.",
+    "reason": "The request combines instruction with a learner exercise, not a claim of mastery.",
+    "source": [
+      "Ask learners to retrieve an idea before showing its explanation.",
+      "Use their error to choose the next example instead of repeating the same explanation."
+    ],
+    "sections": [
+      [
+        "lesson",
+        "Retrieval and feedback",
+        "Try recalling an idea before rereading its explanation. Use what you got wrong to choose a different example for the next attempt.",
+        "explicit"
+      ],
+      [
+        "exercise",
+        "Practice",
+        "Close these notes. Explain how you would help someone who keeps repeating a definition but cannot apply it. After your answer, check whether you used retrieval and an example targeted to the error. Your mastery has not been assessed yet.",
+        "inferred"
+      ]
+    ]
+  },
+  {
+    "domain": "photography",
+    "intent": "improve",
+    "request": "Improve my portrait retake plan using the collection.",
+    "reason": "The user asks for a revised version of supplied work.",
+    "source": [
+      "If the background is sharp and the subject is soft, inspect the focus plane before blaming camera shake.",
+      "After changing focus, take a comparison frame with other settings held constant."
+    ],
+    "work": "Increase shutter speed, change focus and raise ISO together.",
+    "sections": [
+      [
+        "revision",
+        "Improved retake plan",
+        "Inspect the focus plane first. Retake focused on the subject while keeping shutter speed and ISO unchanged. Compare the frames before changing another setting.",
+        "inferred"
+      ]
+    ]
+  },
+  {
+    "domain": "business",
+    "intent": "reference",
+    "request": "What do these sources say should matter more than enthusiasm?",
+    "reason": "The user asks a source-backed question with no need to choose a new output artifact.",
+    "source": [
+      "For this exercise, prioritize observed customer commitments over general enthusiasm.",
+      "Compare options using the same evidence threshold and state what would reverse the choice."
+    ],
+    "sections": [
+      [
+        "answer",
+        "Source-backed answer",
+        "These sources prioritize observed customer commitments over general enthusiasm, within the exercise's scope. They do not establish a universal market-success guarantee.",
+        "explicit"
+      ]
+    ]
+  }
+]

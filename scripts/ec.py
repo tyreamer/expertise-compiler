@@ -503,8 +503,10 @@ def main():
     p = sub.add_parser('work', help='Goal-driven collection and result coordinator, operated by the assistant')
     p.add_argument('--project', default='.')
     p.add_argument('--input'); p.add_argument('--metadata'); p.add_argument('--collection'); p.add_argument('--name')
-    p.add_argument('--action', choices=['work','save','explore','add','rebuild','export','list'], default='work')
-    p.add_argument('--brief'); p.add_argument('--target', choices=['review','checklist'])
+    p.add_argument('--action', choices=['work','save','prepare','explore','add','remove','replace','rebuild','export','list','inspect','compare','archive','restore'], default='work')
+    p.add_argument('--brief'); p.add_argument('--target', choices=['create','review','improve','decide','plan','do','learn','reference','checklist'])
+    p.add_argument('--remove', action='append'); p.add_argument('--before'); p.add_argument('--after')
+    p.add_argument('--before-knowledge'); p.add_argument('--after-knowledge')
     p.add_argument('--adopt'); p.add_argument('--reconciled', action='store_true'); p.add_argument('--reviewed', action='store_true')
     p = sub.add_parser('validate-build'); p.add_argument('folder')
     p = sub.add_parser('compile', help='Agent coordinator: start/resume and advance to the next reasoning task')
@@ -526,7 +528,8 @@ def main():
             from goal_workflow import work
             result = work(project=args.project, input=args.input, metadata=args.metadata, collection=args.collection,
                           name=args.name, action=args.action, brief=args.brief, target=args.target, adopt=args.adopt,
-                          reconciled=args.reconciled, reviewed=args.reviewed)
+                          reconciled=args.reconciled, reviewed=args.reviewed,remove=args.remove,before=args.before,after=args.after,
+                          before_knowledge=args.before_knowledge,after_knowledge=args.after_knowledge)
         elif args.command == 'validate-build':
             from goal_workflow import validate_build
             result = validate_build(args.folder)

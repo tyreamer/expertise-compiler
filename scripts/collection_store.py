@@ -3,7 +3,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import uuid
-from ec import VERSION, digest, ingest, read, require, safe_child, validate_schema, validate_sources, write
+from ec import VERSION, Invalid, digest, fingerprint, ingest, read, require, safe_child, validate_schema, validate_sources, validate_ir, validate_units, write
 from ingestors import adapter_for
 
 
@@ -33,6 +33,8 @@ class Library:
         require(data['collection_id'] == hits[0]['collection_id'], 'Collection identity mismatch')
         revisions = [r['revision_id'] for r in data['revisions']]
         require(len(revisions) == len(set(revisions)) and data['active_revision'] in revisions, 'Malformed source revisions')
+        if 'revision_history' in data:
+            require(set(data['revision_history'])<=set(revisions) and data['revision_history'][-1]==data['active_revision'], 'Malformed revision history')
         return folder, data
 
     def save(self, folder, data):
@@ -43,11 +45,11 @@ class Library:
         self.index['active_collection'] = data['collection_id']
         write(self.path, self.index)
 
-    def archive(self, input=None, *, name=None, collection=None, metadata=None, adopt=None, add=False):
+    def archive(self, input=None, *, name=None, collection=None, metadata=None, adopt=None, add=False, remove=None, replace=False):
         existing = self.resolve(collection) if collection else None
         if existing:
             folder, data = existing
-            require(add or adopt is not None, 'Adding material to an existing collection needs the add action')
+            require(add or remove or replace or adopt is not None, 'Adding material to an existing collection needs the add action')
         else:
             name = name or (Path(input or adopt).name.replace('-', ' ').replace('_', ' ').title() + ' Sources')
             require(not any(c['name'].casefold() == name.casefold() for c in self.index['collections']), 'That collection name already exists; use add or select it')
@@ -71,9 +73,15 @@ class Library:
                     for doc in docs.values():
                         records[doc['filename']] = ((previous / doc['raw_path']).read_bytes(),
                                                    {k:doc[k] for k in ('title','creator','url','caption_type')})
-                for record in adapter_for(input).collect(metadata):
+                if remove:
+                    require(previous is not None, 'Source removal needs an existing collection')
+                    for selector in remove:
+                        matches=[d for d in docs.values() if selector in {d['source_id'],d['filename'],d['title']}]
+                        require(len(matches)==1,'Source name is missing or ambiguous: '+selector)
+                        records.pop(matches[0]['filename'],None)
+                for record in (adapter_for(input).collect(metadata) if input else []):
                     filename = record.filename
-                    if filename in records:
+                    if filename in records and not replace:
                         if records[filename][0] == record.raw: continue
                         filename = '_imports/' + digest(record.raw)[:16] + '/' + filename
                     records[filename] = (record.raw, record.metadata)
@@ -84,7 +92,11 @@ class Library:
                     meta[filename] = m
                 write(temp / 'metadata.json', meta)
                 candidate = temp / 'run'
-                ingest(inputs, candidate, temp / 'metadata.json')
+                if records:
+                    ingest(inputs, candidate, temp / 'metadata.json')
+                else:
+                    write(candidate / 'corpus.json', {'schema_version':VERSION,'sources':[], 'corpus_id':'corpus-'+fingerprint([])})
+                    (candidate / 'units').mkdir()
             corpus, docs, _ = validate_sources(candidate)
             revision_id = 'source-' + corpus['corpus_id'].split('-')[1][:24]
             destination = folder / 'sources' / revision_id
@@ -93,17 +105,91 @@ class Library:
             else:
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 if previous and not adopt:
-                    for path in (previous / 'units').glob('*.json'):
-                        part = read(path)
-                        if part.get('source_id') in docs:
-                            part['corpus_id'] = corpus['corpus_id']
-                            write(candidate / 'units' / path.name, part)
+                    self.carry_checkpoints(previous,candidate)
                 candidate.rename(destination)
+            history=data.get('revision_history',[r['revision_id'] for r in data['revisions']])
+            if not history or history[-1]!=revision_id: history.append(revision_id)
+            data['revision_history']=history
             if revision_id not in {r['revision_id'] for r in data['revisions']}:
                 data['revisions'].append({'revision_id':revision_id,'corpus_id':corpus['corpus_id'],'run':destination.relative_to(folder).as_posix()})
             data['active_revision'] = revision_id
             self.save(folder, data)
         return folder, data
+
+    @staticmethod
+    def carry_checkpoints(previous,candidate):
+        """Invalidate evidence/dependency closure when a source disappears or changes."""
+        corpus,docs,segments=validate_sources(candidate)
+        parts=[read(p) for p in (previous/'units').glob('*.json')]
+        valid={}; original={u['unit_id']:u for p in parts for u in p['units']}
+        for uid,unit in original.items():
+            try: validate_units([unit],docs,segments,check_relations=False)
+            except Invalid: continue
+            valid[uid]=unit
+        while True:
+            invalid={uid for uid,u in valid.items() if any(r['target'] not in valid for r in u['relations'])}
+            if not invalid: break
+            for uid in invalid: valid.pop(uid)
+        for part in parts:
+            sid=part['source_id']
+            if sid not in docs: continue
+            kept=[u for u in part['units'] if u['unit_id'] in valid]
+            # A changed dependency requires a fresh source pass, not a false complete checkpoint.
+            if len(kept)!=len(part['units']):
+                write(candidate/'retained-drafts'/f'{sid}.json',{'prior_note':part['note'],'units':kept})
+                continue
+            part['corpus_id']=corpus['corpus_id']
+            write(candidate/'units'/f'{sid}.json',part)
+        write(candidate/'source-change.json',{'previous_corpus':validate_sources(previous)[0]['corpus_id'],
+              'retained_unit_ids':sorted(valid),'invalidated_unit_ids':sorted(set(original)-set(valid))})
+
+    def catalog(self):
+        return [self.inspect(entry['collection_id']) for entry in self.index['collections']]
+
+    def inspect(self,selector=None):
+        resolved=self.resolve(selector); require(resolved is not None,'No selected collection')
+        folder,data=resolved; run=self.run(folder,data); _,docs,_=validate_sources(run)
+        ir=validate_ir(run) if (run/'ir.json').exists() else None
+        return {'name':data['name'],'collection_id':data['collection_id'],'archived':data.get('archived',False),
+                'sources':[{'source_id':d['source_id'],'filename':d['filename'],'title':d['title'],'url':d['url']} for d in docs.values()],
+                'source_count':len(docs),'knowledge_units':len(ir['units']) if ir else 0,
+                'coverage':ir['coverage'] if ir else [],'source_revisions':len(data['revisions']),
+                'active_revision':data['active_revision'],'knowledge_revisions':sum(len(list((safe_child(folder,r['run'])/'history').glob('*.json'))) for r in data['revisions']),
+                'goals':[read(folder/'briefs'/f'{bid}.json')['objective'] for bid in data['briefs']],
+                'build_count':len(data['builds']),'contradictions':sum(r['kind']=='contradicts' for u in (ir['units'] if ir else []) for r in u['relations'])}
+
+    def set_archived(self,selector,archived):
+        resolved=self.resolve(selector); require(resolved is not None,'No selected collection')
+        folder,data=resolved; data['archived']=archived; self.save(folder,data)
+        return self.inspect(data['collection_id'])
+
+    def compare(self,selector=None, before=None, after=None, before_knowledge=None, after_knowledge=None):
+        resolved=self.resolve(selector); require(resolved is not None,'No selected collection')
+        folder,data=resolved
+        def revision(key,default):
+            key=key or default
+            found=[r for r in data['revisions'] if r['revision_id']==key]
+            require(len(found)==1,'Unknown source revision')
+            run=safe_child(folder,found[0]['run']); _,docs,_=validate_sources(run)
+            ir=validate_ir(run) if (run/'ir.json').exists() else None
+            return run,{d['filename']:d for d in docs.values()},ir
+        active=data['active_revision']; history=data.get('revision_history',[r['revision_id'] for r in data['revisions']])
+        old,old_docs,old_ir=revision(before,history[-2] if len(history)>1 else active)
+        new,new_docs,new_ir=revision(after,active)
+        if before_knowledge: old_ir=validate_ir(old,safe_child(old,'history/'+before_knowledge+'.json'))
+        if after_knowledge: new_ir=validate_ir(new,safe_child(new,'history/'+after_knowledge+'.json'))
+        old_names=set(old_docs); new_names=set(new_docs)
+        old_units={u['unit_id']:u for u in old_ir['units']} if old_ir else {}
+        new_units={u['unit_id']:u for u in new_ir['units']} if new_ir else {}
+        return {'before':old.name,'after':new.name,'added_sources':sorted(new_names-old_names),
+                'before_knowledge':fingerprint(old_ir) if old_ir else None,'after_knowledge':fingerprint(new_ir) if new_ir else None,
+                'removed_sources':sorted(old_names-new_names),
+                'changed_sources':sorted(k for k in old_names&new_names if fingerprint(old_docs[k])!=fingerprint(new_docs[k])),
+                'knowledge_comparison_available':old_ir is not None and new_ir is not None,
+                'added_units':sorted(set(new_units)-set(old_units)) if new_ir is not None else None,
+                'removed_units':sorted(set(old_units)-set(new_units)) if new_ir is not None else None,
+                'changed_units':sorted(k for k in old_units.keys()&new_units.keys() if old_units[k]!=new_units[k]) if new_ir is not None else None,
+                'preserved_builds':len(data['builds'])}
 
     @staticmethod
     def run(folder, data):

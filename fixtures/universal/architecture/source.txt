@@ -1,0 +1,2 @@
+Define which principal is acting and which resource and action need authorization before selecting a credential format.
+Test expired credentials and revoked access as separate failure cases.
