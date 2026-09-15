@@ -4,9 +4,27 @@ These are behavioral acceptance cases, not claims of live model performance. Aut
 
 Install a clean copy into a temporary skill location, open a separate project with the fixture inputs, and confirm natural-language discovery. In a real Codex/Claude Code session, do not instruct the assistant to read SKILL.md or expose internal commands. Record whether it activates, performs the complete loop, and produces a useful answer. Run the same flow in both clients when available; shell-only tests cannot certify a client's natural-language skill matching.
 
+## Goal-first live acceptance
+
+In the updated checkout, send:
+
+> Use this checkout's Expertise Compiler to save the transcripts in ./fixtures/debugging as Debugging Methods. Use them to review this plan: “I'll change date parsing and delimiter handling together, try one successful file, and consider the bug fixed.” I want a safer debugging plan with concrete changes and source-backed reasons. Preserve my original and save the result and reusable method.
+
+Expect actual saved review/method links, one-cause experiments, a reproducer and regression checks with source support. No capability-selection question is needed. Do not infer that an absent code sample permits an invented patch. The final response must distinguish assistant semantic review from effectiveness testing.
+
+Then start a fresh session in the same project:
+
+> Use my Debugging Methods collection to make a checklist for a teammate investigating a CSV importer that loses a row. We don't yet have a reliable reproducer. Save it as a new result.
+
+Expect reuse of extracted knowledge, a new brief/checklist/build and an intact original result. Add a genuinely new transcript next and ask what changes; verify the new source revision and reuse/new extraction report. Separately try source-only input (one useful goal question), save-only (no forced goal), and a judgment the source cannot establish (honest limitation).
+
+For generality repeat review/improvement with photography, using a draft that confuses a sharp background with camera shake. These fixtures are synthetic and are not independent evaluation holdouts after being used here.
+
 ## Photography
 
-1. “Compile ./fixtures/photography.” The assistant reads the transcript and completes the reasoning itself, then offers up to three grounded capabilities. A single strong option is fine.
+The following legacy discovery cases remain supported when discovery is explicitly requested. For content with no goal, the new default first asks what the user hopes to accomplish.
+
+1. “Explore what's useful in ./fixtures/photography.” The assistant reads the transcript and offers a few grounded possibilities without forcing a skill.
 2. “What useful capabilities can this corpus support?” It explains a narrow handheld blur/focus review. It must not claim coverage of composition or commercial pricing.
 3. “Build the photo critique capability.” It maps the phrase to the supported option, states the limitation, and builds it without asking for an internal identifier.
 4. “Use that capability on this held-out example: a ceramic bowl is blurry but lettering behind it is sharp.” It examines focus rather than treating a faster shutter as a universal fix.

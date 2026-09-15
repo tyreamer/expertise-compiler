@@ -1,6 +1,6 @@
 interface:
   display_name: "Expertise Compiler"
-  short_description: "Turn transcripts into reusable, source-backed skills"
-  default_prompt: "Use $expertise-compiler to compile my transcripts and suggest useful capabilities."
+  short_description: "Apply source methods to your work and save them for reuse"
+  default_prompt: "Use $expertise-compiler to apply these sources to my goal, improve my work, and save the collection and reusable method."
 policy:
   allow_implicit_invocation: true

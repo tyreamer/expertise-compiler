@@ -1,31 +1,28 @@
 # Expertise Compiler
 
-**Turn transcripts into reusable, source-backed AI capabilities.**
+**Give your AI source material and tell it what you're trying to accomplish.** It applies relevant methods to your actual work, saves the sources and reasoning, and lets you use the same collection for different goals later.
 
 Install it once as a skill, then tell your AI:
 
-> Compile these transcripts.
+> Use these sources to improve this proposal. It's for a small business with a limited budget. Identify missing requirements and propose concrete changes. Save the sources as Product Research.
 
 Or point it at a folder:
 
-> Compile the transcripts in ./input and tell me the most useful capabilities this material can support.
+> Use the transcripts in ./input to review my plan in ./plan.md. Preserve my original and save an improved version with the reasons for your changes.
 
-Your assistant does the work and offers a small number of useful capabilities. Say **“Build capability 2”**, then **“Use it on this problem.”** No terminal workflow to learn.
+Your assistant saves the goal, applies the supported methods, and returns an assessment, prioritized findings, concrete changes, and links to the saved result and reusable method. You do not choose compiler stages or fill out forms. If you supply only sources, it asks what you hope to accomplish; **“save for later”** and **“explore what's useful”** are valid answers.
 
 ## Why this exists
 
 Transcripts are information. Expertise Compiler turns their methods, procedures, examples, disagreements, and limitations into capabilities you can use again.
 
-Instead of reconstructing advice in every chat, you get a reusable method with traceable evidence, clear limits, and an explanation of where sources disagree. Source statements stay distinct from AI inference and synthesis.
+The most valuable output is work you can act on: a reviewed proposal, improved plan, or practical checklist. Underneath it is a reusable method with traceable evidence, clear limits and preserved disagreements. Source statements stay distinct from AI inference and your private context. The archive can support tomorrow's different goal without starting from scratch.
 
 ```text
-Transcripts
-    ↓
-Expertise Compiler
-    ↓
-Structured Expertise
-    ↓
-Reusable AI Capabilities
+Named source collection → durable, evidence-linked knowledge
+                                      + your goal and work
+                                      ↓
+                         useful result + reusable method
 ```
 
 **No model API key. No hosted compiler service. Your existing AI does the reasoning.** The underlying knowledge remains yours to inspect and reuse beyond a single skill.
@@ -54,17 +51,24 @@ The assistant handles downloading and copying; you do not need to clone the repo
 
 | Say this | What happens |
 | --- | --- |
-| “Compile these transcripts.” | Your assistant reads the supplied material and proposes 1–3 useful capabilities. |
-| “What can I build from this content?” | It explains supported uses and meaningful gaps. |
-| “Build the strongest capabilities.” | It selects and builds up to three supported capabilities. |
-| “Build capability 2.” | It builds the option from the list you were shown. |
-| “Use that capability on this problem…” | It applies the method, with source-backed reasoning and limits. |
-| “Resume the compilation.” | It continues saved work in this project. |
-| “Compare this capability against raw transcript chat.” | It prepares matched new tasks and helps assess the results. |
+| “Use these sources to improve this proposal.” | Reviews the actual proposal and saves concrete changes with evidence and limits. |
+| “Save these as Product Research for later.” | Archives originals and metadata without forcing a skill or goal. |
+| “Apply the same approach to this new draft.” | Saves a new brief and result using relevant existing knowledge. |
+| “Use Product Research to make a checklist instead.” | Reuses knowledge or rereads archived sources when the new goal needs more. |
+| “Add these sources and show me what changes.” | Preserves earlier versions, adds sources and revisits the current task. |
+| “Turn what we used into a reusable agent skill.” | Exports the method and relevant evidence excerpts locally. |
+| “Explore what's useful in this collection.” | Explains a few supported possibilities and meaningful gaps. |
+| “Compare this with ordinary transcript chat.” | Prepares a fair comparison of quality and effort across first use, reuse and updates. |
 
 For example, photography transcripts might support a **Handheld Blur Reviewer** that checks focus before suggesting shutter changes. The assistant explains what it can do, what the sources do not establish, and where the resulting skill is saved. It does not promise a full photography expert from a few narrow lessons.
 
-Once your capability is ready, send a real task or ask for a worked example. Your assistant validates and uses it for you. The resulting skill folder is portable, and its evidence travels with it.
+The task is completed in the same workflow. A source-specific method remains available for the next task; a new goal is not permanently tied to the first method or output format.
+
+## Saved locally, reusable later
+
+Your project's `.expertise-compiler/library.json` maps readable collection names to stable IDs. Collections preserve original files, source metadata, normalized segments, extraction notes, knowledge revisions, private briefs and immutable completed builds. Each result is bound to its sources, knowledge, brief, method, output target and compiler fingerprint. Interrupted work resumes from saved checkpoints. Existing runs can be adopted without modifying their original folders.
+
+Ordinary skill exports contain selected knowledge and relevant quotations. They exclude full raw transcripts, unrelated source documents and private briefs/work products. The full audit material stays in the collection. Exporting locally does not publish or globally install anything, and citations do not establish permission to share. Ask your assistant explicitly when you want to export or install a method.
 
 ## What you need
 
@@ -78,7 +82,7 @@ Work stays in your local project. Your chosen AI service may still process conte
 
 The goal is better repeated work than attaching transcripts and asking questions: durable methods, preserved evidence, honest scope, reconciled disagreement, and portable skills. That improvement should be measured, not assumed.
 
-Ask for a comparison to prepare matched tasks for raw transcripts and the compiled capability. Independent fresh sessions may be needed; the assistant prepares the material and processes the answers. A tie is a valid result. [How comparisons work](docs/EVALUATION.md).
+Ask for a comparison with the same sources, goal, constraints and access to persistent context. Measure quality, corrections, setup, reuse and update effort. Comparable quality with substantially less repeated effort can be valuable. No live effectiveness result is claimed. Passing package validation proves integrity and evidence linkage, not sound judgment or superiority. [How comparisons work](docs/EVALUATION.md).
 
 MIT licensed. Synthetic examples cover gardening, photography, and debugging. Imported source material retains its ownership and licensing.
 

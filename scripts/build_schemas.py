@@ -55,6 +55,28 @@ schemas['session'] = obj(schema_version=V, active_run=S,
                          pending_request=obj(run=S, intent={'enum':['compile','discover','build','use','compare']},
                                              select={'type':['string','null']}, build_all={'type':'boolean'}))
 schemas['session']['required'] = ['schema_version', 'active_run']
+schemas['manifest']['properties']['export_format'] = {'const':'scoped-1'}
+schemas['source-excerpts'] = arr(obj(source_id=SID, title=NULL_S, creator=NULL_S, filename=S, url=NULL_S, content_hash=HASH,
+                                    excerpts=arr(obj(segment_id=S, start={'type':['number','null'],'minimum':0},
+                                                     end={'type':['number','null'],'minimum':0}, speaker=NULL_S, quote=S),1)),1)
+schemas['brief'] = obj(schema_version=V, objective=S, context=EMPTY, constraints=arr(S),
+                       work=obj(label=S, text=EMPTY), desired_result=S, success_criteria=arr(S,1))
+schemas['collection'] = obj(schema_version=V, collection_id=ID, name=S, active_revision=ID,
+                            revisions=arr(obj(revision_id=ID, corpus_id=CID, run=S),1), briefs=arr(ID), builds=arr(ID))
+schemas['coverage-assessment'] = obj(schema_version=V, brief_id=ID, ir_hash=HASH,
+                                     decision={'enum':['reuse','extend']}, source_ids=arr(SID), reason=S,
+                                     unsupported=arr(S))
+schemas['goal-method'] = obj(schema_version=V, brief_id=ID, ir_hash=HASH, capability=capability)
+finding = obj(title=S, priority={'enum':['high','medium','low']}, assessment=S, proposed_change=S, unit_ids=arr(ID,1))
+step = obj(action=S, done_when=S, unit_ids=arr(ID,1))
+schemas['work-result'] = obj(schema_version=V, brief_id=ID, ir_hash=HASH, method_hash=HASH,
+                             target={'enum':['review','checklist']}, assessment=S, findings=arr(finding),
+                             proposed_revision=EMPTY, checklist=arr(step), disagreements=arr(S), limitations=arr(S),
+                             unsupported=arr(S), additional_general_advice=arr(S))
+schemas['goal-build'] = obj(schema_version=V, build_id=ID, collection_id=ID, source_revision=ID,
+                            corpus_id=CID, ir_hash=HASH, knowledge_path=S, brief_id=ID, brief_hash=HASH,
+                            method_hash=HASH, result_hash=HASH, target={'enum':['review','checklist']},
+                            compiler_hash=HASH, files={'type':'object'})
 
 if __name__ == '__main__':
     for name, schema in schemas.items():

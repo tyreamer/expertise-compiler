@@ -22,6 +22,9 @@
     },
     "files": {
       "type": "object"
+    },
+    "export_format": {
+      "const": "scoped-1"
     }
   },
   "required": [

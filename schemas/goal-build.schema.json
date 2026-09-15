@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "goal-build",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "type": "string"
+    },
+    "build_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "collection_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "source_revision": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "corpus_id": {
+      "type": "string",
+      "pattern": "^corpus-[a-f0-9]{64}$"
+    },
+    "ir_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "knowledge_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "brief_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "brief_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "method_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target": {
+      "enum": [
+        "review",
+        "checklist"
+      ]
+    },
+    "compiler_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "files": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "build_id",
+    "collection_id",
+    "source_revision",
+    "corpus_id",
+    "ir_hash",
+    "knowledge_path",
+    "brief_id",
+    "brief_hash",
+    "method_hash",
+    "result_hash",
+    "target",
+    "compiler_hash",
+    "files"
+  ],
+  "additionalProperties": false
+}

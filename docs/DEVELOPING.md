@@ -30,6 +30,8 @@ For Codex's bundled GitHub installer, use repository `tyreamer/expertise-compile
 
 - `SKILL.md`, `agents/openai.yaml`: discovery, intent routing, conversation contract.
 - `scripts/workflow.py`: saved project state and deterministic orchestration; returns agent tasks at semantic boundaries.
+- `scripts/goal_workflow.py`, `scripts/collection_store.py`: goal briefs, named archives, coverage reassessment, saved reviews/checklists and immutable build validation.
+- `scripts/scoped_export.py`: selected method/evidence export, with full originals retained privately.
 - `scripts/ec.py`: preserved ingestion, normalization, IR assembly, integrity checks, and portable export.
 - `scripts/ingestors/`: transcript file adapter and an explicit unavailable YouTube boundary. Adapters produce original bytes/metadata, not knowledge units.
 - `prompts/`: detailed reasoning and operator instructions, loaded as needed.
@@ -37,6 +39,8 @@ For Codex's bundled GitHub installer, use repository `tyreamer/expertise-compile
 - `fixtures/flows/`: domain-specific held-out cases and scripted conversation contracts.
 
 Project state lives in `.expertise-compiler/`, outside the installed skill. Add that directory to the consuming project's ignore rules before publishing its project; the compiler does not silently modify unrelated Git settings. This repository already ignores it.
+
+`tests/test_goals.py` covers goal/no-goal/archive paths, actual saved synthetic reviews in two domains, fresh-process collection reuse, checklist output, another source pass, additive source dependencies, private export boundaries, adoption, tampering, installation and fair evaluation context. It replays authored semantic data at the assistant boundary; it is not a live assistant effectiveness test.
 
 ## Validation limits
 

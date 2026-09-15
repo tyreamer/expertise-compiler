@@ -2,7 +2,23 @@
 
 These commands are for the assistant, contributors, and advanced debugging. Normal users install the skill and talk to it; see [README](../README.md). Run from a user's project and resolve the installed scripts by absolute path. Relative input/output/metadata paths resolve against `--project` for the coordinator.
 
-## Coordinator
+## Goal coordinator
+
+```text
+python /path/to/expertise-compiler/scripts/ec.py work --project . --input ./input --name "Product Research" --brief ./.expertise-compiler/inbox/brief.json
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research"
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research" --reconciled
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research" --reviewed
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research" --brief NEW_BRIEF --target checklist
+python /path/to/expertise-compiler/scripts/ec.py work --project . --input ./more --collection "Product Research" --action add
+python /path/to/expertise-compiler/scripts/ec.py work --project . --action list
+python /path/to/expertise-compiler/scripts/ec.py work --project . --collection "Product Research" --action export
+python /path/to/expertise-compiler/scripts/ec.py validate-build BUILD_FOLDER
+```
+
+Use --action save to archive without a goal, --action explore for optional discovery, and --adopt OLD_RUN to copy an existing run. Do not repeat --input on continuation calls. The assistant saves briefs from conversation, handles returned tasks and acknowledges actual review; users do not operate this CLI. [Complete phase contract](../prompts/goal-work.md).
+
+## Legacy capability coordinator
 
 ```text
 python /path/to/expertise-compiler/scripts/ec.py compile ./input --project .

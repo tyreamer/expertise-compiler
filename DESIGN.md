@@ -2,7 +2,9 @@
 
 ## Conversational product boundary
 
-The installed skill is the product surface. Users provide transcripts and ask to compile, discover, build, use, resume, or compare. The host assistant runs deterministic utilities and owns semantic reasoning. Internal phase results are tasks for the agent, never a user checklist.
+The installed skill is the product surface. Users supply sources and explain what they want to accomplish. The assistant saves a brief, applies relevant methods to actual text work and returns a review/improvement or checklist. Exploration and archiving are valid alternatives. Internal phase results are tasks for the agent, never a user checklist.
+
+`goal_workflow.py` layers named collections and saved work over the original compiler. `collection_store.py` preserves additive source revisions and can copy an existing run without changing it. A brief stores the user's context separately from evidence. Each goal explicitly assesses extraction sufficiency; targeted source passes can extend knowledge. Builds bind source/IR revisions, brief, method, result, target and compiler fingerprint. Earlier builds remain reproducible after updates. Deterministic validation runs before a staged build becomes complete.
 
 A coordinator now keeps project-local session state separate from the installed skill, snapshots changed inputs automatically, validates complete checkpoints, and binds a reconciliation acknowledgement to their exact content. It assembles reviewed knowledge, validates proposals, binds displayed numbers to an IR/proposal revision, and creates or reuses checked exports. Review acknowledgements prove only that the agent signaled review; they do not establish semantic correctness. Explicit low-level tools remain available to contributors.
 
@@ -29,7 +31,7 @@ Schemas are versioned at `1.0`; incompatible versions fail closed. There is no a
 
 Input snapshots and exports are staged and published only after validation. Source-level checkpoints enable resume without redoing complete sources. Assembly saves IR revisions and replaces the current IR atomically. Two writers should not edit the same run concurrently; distributed locking and merge resolution are outside the MVP.
 
-The export contains the full IR and corpus to remain verifiable without the original machine. Selected knowledge supplies progressive disclosure for normal use. This favors provenance over small bundles; selective export with a provable dependency closure is a future optimization.
+Ordinary exports contain only the method, selected knowledge and relevant quotations. Closure checks preserve recorded prerequisites and contradictions. Export validators establish internal consistency, while private build validation links the export back to full originals and historical IR. Full private audit bundles and scoped portable exports are deliberately separate. Legacy full-corpus packages remain readable by the validator. Semantic review is still needed to detect private context paraphrased into a method.
 
 ## What this does not establish
 

@@ -6,9 +6,19 @@ Tell your assistant:
 
 It prepares the comparison, saves the material, and checks the returned answers. You do not need a command line.
 
-Both approaches receive identical new tasks and answer requirements. One gets the original transcripts; the other gets the reusable method, worked examples, and selected evidence. Expected answers stay separate from both prompts.
+Both approaches receive identical new tasks, the same user goal/constraints and full original transcripts. The compiled arm additionally receives its reusable method and selected evidence. Both may create and retain notes, context and methods in separate workspaces. Expected answers stay separate from both prompts. The baseline is allowed to use ordinary chat well; it is not forced to forget earlier work.
 
 The comparison looks for useful next actions, faithful advice, appropriate handling of gaps and disagreement, traceable evidence, and consistent reuse. Setup effort and corrections matter too: compilation has an upfront cost.
+
+## Three stages, with persistent context
+
+1. **Initial task:** review the same previously unseen work against the same goal. Count compiler installation/setup and extraction time; count baseline source preparation and organization too.
+2. **Reuse:** give both arms a new draft or a new checklist goal. Preserve each arm's own prior notes and context. Measure how much the user must restate, repair or verify.
+3. **Update:** add the same source to both workspaces, ask for a revised result, and measure update work and whether outdated advice was corrected. Keep earlier results available in both arms.
+
+Before running, freeze tasks and rating criteria, record model/settings and source revision, and agree what difference in effort would matter to the user. For example, define a quality floor of no critical unsupported recommendation, then compare total user effort over all three stages. This is a proposed criterion, not a reported outcome.
+
+The harness creates `effort.json` with six empty observations: baseline/compiled × initial/reuse/update. Record active user minutes, assistant minutes, user messages, corrections, a human quality rating and notes. Use the same rating scale in both arms; define it before viewing answers. Leave unknown values null. Include manual evidence-checking time and failed attempts. Report quality and effort separately; comparable quality with materially less repeated effort can be a useful result. No automatic winner is inferred from these fields.
 
 ## Fresh sessions matter
 

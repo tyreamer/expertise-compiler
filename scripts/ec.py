@@ -374,6 +374,15 @@ def skill_text(cap):
 
 
 def package(run, capability_id, destination):
+    from scoped_export import export_method
+    caps = validate_capabilities(run)
+    cap = next((c for c in caps['capabilities'] if c['capability_id'] == capability_id), None)
+    require(cap is not None, f'Unknown capability: {capability_id}')
+    return export_method(run, validate_ir(run), cap, destination)
+
+
+def package_audit(run, capability_id, destination):
+    """Legacy full private audit bundle; never the default sharing export."""
     run, destination = Path(run), Path(destination).resolve()
     caps = validate_capabilities(run)
     cap = next((c for c in caps['capabilities'] if c['capability_id'] == capability_id), None)
@@ -430,6 +439,9 @@ def validate_package(folder):
     validate_schema(manifest, 'manifest')
     require(folder.name == manifest['capability_id'], 'Package directory must match skill name')
     require(manifest['files'] == inventory(folder), 'Package file inventory/hash mismatch')
+    if manifest.get('export_format') == 'scoped-1':
+        from scoped_export import validate_scoped
+        return validate_scoped(folder, manifest)
     required = {'SKILL.md', 'capability.json', 'references/knowledge.json', 'references/ir.json',
                 'references/capabilities.json', 'evidence/index.json', 'examples/examples.json',
                 'sources/corpus.json', 'checks/validate.py', 'checks/ec.py'}
@@ -488,6 +500,13 @@ def status(run):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
+    p = sub.add_parser('work', help='Goal-driven collection and result coordinator, operated by the assistant')
+    p.add_argument('--project', default='.')
+    p.add_argument('--input'); p.add_argument('--metadata'); p.add_argument('--collection'); p.add_argument('--name')
+    p.add_argument('--action', choices=['work','save','explore','add','rebuild','export','list'], default='work')
+    p.add_argument('--brief'); p.add_argument('--target', choices=['review','checklist'])
+    p.add_argument('--adopt'); p.add_argument('--reconciled', action='store_true'); p.add_argument('--reviewed', action='store_true')
+    p = sub.add_parser('validate-build'); p.add_argument('folder')
     p = sub.add_parser('compile', help='Agent coordinator: start/resume and advance to the next reasoning task')
     p.add_argument('input', nargs='?'); p.add_argument('output', nargs='?')
     p.add_argument('--run', dest='run_path', help='Adopt/resume a specific existing run without new input')
@@ -503,7 +522,15 @@ def main():
     p = sub.add_parser('validate-package'); p.add_argument('folder')
     args = parser.parse_args()
     try:
-        if args.command == 'compile':
+        if args.command == 'work':
+            from goal_workflow import work
+            result = work(project=args.project, input=args.input, metadata=args.metadata, collection=args.collection,
+                          name=args.name, action=args.action, brief=args.brief, target=args.target, adopt=args.adopt,
+                          reconciled=args.reconciled, reviewed=args.reviewed)
+        elif args.command == 'validate-build':
+            from goal_workflow import validate_build
+            result = validate_build(args.folder)
+        elif args.command == 'compile':
             from workflow import compile_workflow
             require(not args.run_path or not (args.input or args.output), '--run cannot be combined with input/output positionals')
             result = compile_workflow(args.input, args.run_path or args.output, project=args.project, metadata=args.metadata,

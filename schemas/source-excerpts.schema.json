@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "source-excerpts",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "source_id": {
+        "type": "string",
+        "pattern": "^src-[a-f0-9]{24}$"
+      },
+      "title": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1
+      },
+      "creator": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1
+      },
+      "filename": {
+        "type": "string",
+        "minLength": 1
+      },
+      "url": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "minLength": 1
+      },
+      "content_hash": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      },
+      "excerpts": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "segment_id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "start": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "end": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "speaker": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "quote": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "segment_id",
+            "start",
+            "end",
+            "speaker",
+            "quote"
+          ],
+          "additionalProperties": false
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "source_id",
+      "title",
+      "creator",
+      "filename",
+      "url",
+      "content_hash",
+      "excerpts"
+    ],
+    "additionalProperties": false
+  },
+  "minItems": 1,
+  "uniqueItems": true
+}
