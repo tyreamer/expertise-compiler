@@ -6,6 +6,8 @@ license: MIT
 
 # Expertise Compiler
 
+This installed skill is a conversational interface to the core compiler, not the product's architectural definition. [NORTH_STAR.md](NORTH_STAR.md) defines the durable, provider-independent expertise representation and extensible build direction. Today's intent contracts and Agent Skills export are supported interfaces/targets, not the limits of the expertise model.
+
 Give your AI content you trust, tell it what you want to accomplish, and turn that material into reusable expertise that helps you do the work. When a goal is supplied, finish the useful outcome; do not stop at a menu of capabilities. No domain-specific routing or creator persona is the product.
 
 Requires local file/command access and Python 3.10+. No model API calls or third-party Python runtime packages. You supply reasoning and operate the scripts. Never ask users to run Python, edit JSON, choose internal IDs or manage stages. Do not claim execution without saved, validated artifacts.

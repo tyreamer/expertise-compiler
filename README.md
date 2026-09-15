@@ -1,8 +1,12 @@
 # Expertise Compiler
 
-**Give your AI content you trust and tell it what you're trying to accomplish.** Expertise Compiler turns that material into reusable expertise that helps you actually do the work. Save a collection once, then use it for new goals without re-uploading the sources.
+**Compile human expertise into reusable building blocks for AI.** Expertise Compiler turns trusted content into structured, source-backed knowledge, reasoning patterns and methods that can be rebuilt for different goals. The durable expertise representation is the asset; a skill, reviewer, lesson or workflow is one way to use it.
 
-Install it once as a skill, then tell your AI:
+Built primarily for AI engineers, developers, architects, consultants, agencies, creators and teams building AI workflows. **Digital person platforms package the person. Expertise Compiler packages reusable pieces of the expertise.** You can use a person's reasoning without recreating their personality.
+
+**One corpus, multiple independent builds, preserved evidence.** [Product north star](NORTH_STAR.md) · [Architecture and current limits](DESIGN.md)
+
+The current conversational interface is a Codex/Claude Code skill that runs the local compiler. Install that interface, then tell your AI:
 
 > Save these as Leadership. Use them to review this message before I send it to my team.
 
@@ -19,18 +23,24 @@ Transcripts are information. Expertise Compiler turns their methods, procedures,
 The most valuable output is work you can act on. A collection about a subject can support writing, critique, decisions, guided work or learning when its sources provide sufficient methods. Underneath the result is a reusable method with traceable evidence, clear limits and preserved disagreements. Source statements stay distinct from AI inference and private context. The archive can support tomorrow's different goal without starting from scratch.
 
 ```text
-Source collection → durable expertise IR → goal and context
-                                             ↓
-                                      compiled method
-                                             ↓
-                                         user result
-                                             ↓
-                                   optional reusable asset
+Source collection → durable expertise IR → user build intent
+                                              ↓
+                              select / extend relevant expertise
+                                              ↓
+                                  compiled method / capability
+                                              ↓
+                                        target artifact
+                                              ↓
+                                      validate / evaluate
+                                              ↓
+                                        portable output
 ```
 
 **No model API key. No hosted compiler service. Your existing AI does the reasoning.** The underlying knowledge remains yours to inspect and reuse beyond a single skill.
 
-## Install once
+The long-term model supports independent builds such as decision frameworks, interview-questioning methods, style profiles that exclude opinions, reviewers, coaches and evaluation suites from the same collection. The target taxonomy is open. Today the implementation provides eight goal contracts, structured text results and optional Agent Skills export; it does not yet implement arbitrary target plugins or enforce expertise-component exclusions as structured policy.
+
+## Use the current skill interface
 
 ### Codex
 
@@ -93,7 +103,7 @@ Work stays in your local project. Your chosen AI service may still process conte
 
 ## Built to earn its value
 
-The goal is better repeated work than attaching transcripts and asking questions: durable methods, preserved evidence, honest scope, reconciled disagreement, and portable skills. That improvement should be measured, not assumed.
+The long-term value is faithful decomposition of expertise, conditions and exceptions, preserved disagreements, evidence, corrections, reuse and testing behavior across builds. Ingestion and asset generation alone are not the differentiation. The next quality direction is to let users correct an interpretation once and carry that correction into future builds and regression tests; that correction loop is not implemented yet.
 
 Ask for a comparison with the same sources, goal, constraints and access to persistent context. Measure quality, corrections, setup, reuse and update effort. Comparable quality with substantially less repeated effort can be valuable. No live effectiveness result is claimed. Passing package validation proves integrity and evidence linkage, not sound judgment or superiority. [How comparisons work](docs/EVALUATION.md).
 

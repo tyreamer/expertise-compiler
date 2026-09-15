@@ -1,6 +1,6 @@
 # Develop the skill
 
-The product entry point is the installed SKILL.md, not a user-facing CLI. Keep workflow changes conversational: the agent does deterministic work and interprets structured results, while the user supplies content and goals.
+The installed SKILL.md is the current conversational interface to the core compiler; the CLI is another interface. Neither defines the product. Follow [NORTH_STAR.md](../NORTH_STAR.md) and the [current boundary map](../DESIGN.md) when extending the code. The assistant operates utilities and supplies reasoning while the user supplies content and build intent. Keep target/runtime details out of canonical expertise records.
 
 ## Local checks
 
