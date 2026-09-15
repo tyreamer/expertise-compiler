@@ -6,6 +6,8 @@ Tell your assistant:
 
 It prepares the comparison, saves the material, and checks the returned answers. You do not need a command line.
 
+This is not yet an automatically executed baseline → refinement → release loop. Independent runs and human semantic review must be coordinated, and corrections/rebuilds are assistant-led. Existing artifact validation does not automatically certify behavioral effectiveness. The [concept-validation testing guide](testing-guide.md) defines participant groups, paired tasks, refinement holdouts and proposed decision gates for testing this loop before automating it.
+
 Both approaches receive identical new tasks, the same user goal/constraints and full original transcripts. The compiled arm additionally receives its reusable method and selected evidence. Both may create and retain notes, context and methods in separate workspaces. Expected answers stay separate from both prompts. The baseline is allowed to use ordinary chat well; it is not forced to forget earlier work.
 
 The comparison looks for useful next actions, faithful advice, appropriate handling of gaps and disagreement, traceable evidence, and consistent reuse. Setup effort and corrections matter too: compilation has an upfront cost.
