@@ -60,28 +60,19 @@ Claude Code discovers personal skills in that folder and can invoke them from ma
 
 The assistant handles downloading and copying; you do not need to clone the repository or manually load SKILL.md. Your environment may ask for file-access permission. [Installation details and troubleshooting](docs/INSTALLATION.md).
 
-## Talk to it
+## Start with your actual work
 
-| Say this | What happens |
-| --- | --- |
-| “Save these as Leadership.” | Saves sources and prepares reusable knowledge without forcing a skill. |
-| “Use my Leadership collection to review this message.” | Applies relevant criteria to the actual message and saves feedback. |
-| “Use this collection to help me decide between these options.” | Compares options and gives a conditional recommendation. |
-| “Teach me this material.” | Creates a lesson and exercise, then can assess your response. |
-| “Turn this into a checklist for my situation.” | Applies source procedures to your context with actionable steps. |
-| “Use the same collection for a different goal.” | Reuses sufficient knowledge or extends extraction from the archive. |
-| “Use these sources to improve this proposal.” | Reviews the actual proposal and saves concrete changes with evidence and limits. |
-| “Save these as Product Research for later.” | Archives originals and metadata without forcing a skill or goal. |
-| “Apply the same approach to this new draft.” | Saves a new brief and result using relevant existing knowledge. |
-| “Use Product Research to make a checklist instead.” | Reuses knowledge or rereads archived sources when the new goal needs more. |
-| “Add these sources and show me what changes.” | Preserves earlier versions, adds sources and revisits the current task. |
-| “Turn what we used into a reusable agent skill.” | Exports the method and relevant evidence excerpts locally. |
-| “Explore what's useful in this collection.” | Explains a few supported possibilities and meaningful gaps. |
-| “Compare this with ordinary transcript chat.” | Prepares a fair comparison of quality and effort across first use, reuse and updates. |
+Bring material you trust and explain what you want to accomplish. You do not need to know which capability or output format to choose.
 
-For example, photography transcripts might support a **Handheld Blur Reviewer** that checks focus before suggesting shutter changes. The assistant explains what it can do, what the sources do not establish, and where the resulting skill is saved. It does not promise a full photography expert from a few narrow lessons.
+> Save these transcripts as Client Onboarding. I'm preparing a handoff for a new team member. Use the training to review my draft in ./handoff.md for missing steps and unclear responsibilities. A useful result would be an improved handoff with the reasons for each change. Flag anything the training doesn't establish.
 
-The task is completed in the same workflow. A source-specific method remains available for the next task; a new goal is not permanently tied to the first method or output format.
+In your own words, tell the assistant what you're working on, provide the relevant material or draft, and describe what would make the result useful. Include constraints or exclusions when they matter. These are conversational details, not required form fields; the assistant should use the context already available and ask only for missing information that affects the work.
+
+If you don't have a task yet, say what interests you about the material and ask it to explore supported uses. You can also simply ask it to save the sources for later without producing an output.
+
+The assistant should deliver usable work, explain its evidence and limits, and save the underlying expertise for reuse. Tomorrow, reopen the same project and describe a different task using that named collection. You shouldn't have to reattach the sources or commit to the first output format. Ask for a skill export only when you need one.
+
+**Trying the alpha?** Follow the [testing guide](docs/testing-guide.md) to test a real task, reuse your collection and compare the effort with ordinary transcript chat.
 
 ## Saved locally, reusable later
 
